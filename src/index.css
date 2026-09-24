@@ -143,7 +143,7 @@ a:hover { color: var(--red); }
 
 .more { display: flex; justify-content: center; margin-top: 2rem; }
 
-/* Detail dialog */
+/* Detail dialog. The player starts below the close button so the two never overlap. */
 .detail {
   width: min(860px, calc(100% - 2rem)); max-height: calc(100% - 2rem); padding: 0;
   border: 0; border-radius: var(--radius); background: var(--paper); color: var(--ink);
@@ -163,7 +163,7 @@ a:hover { color: var(--red); }
 .links { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.25rem 0 .5rem; }
 .note { font-size: .92rem; color: var(--muted); margin: 0; }
 
-.player { aspect-ratio: 16 / 9; background: var(--film); border-radius: 3px; overflow: hidden; }
+.player { margin-top: 2.25rem; aspect-ratio: 16 / 9; background: var(--film); border-radius: 3px; overflow: hidden; }
 .player iframe { width: 100%; height: 100%; border: 0; }
 .player__start {
   position: relative; display: grid; place-items: center; width: 100%; height: 100%;
