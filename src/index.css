@@ -169,6 +169,8 @@ a:hover { color: var(--red); }
   position: relative; display: grid; place-items: center; width: 100%; height: 100%;
   padding: 0; border: 0; background: var(--film); cursor: pointer;
 }
+/* The player clips overflow, so draw the focus ring inside. Off-white on film is 14.6:1. */
+.player__start:focus-visible { outline: 3px solid var(--paper); outline-offset: -6px; }
 .player__start img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .55; }
 .player__start .button { position: relative; font-size: 1.15rem; padding: .7rem 1.4rem; }
 

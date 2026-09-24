@@ -1,5 +1,6 @@
 import { readCache, writeCache } from './storage.js';
 import { classify } from './topics.js';
+import { safeUrl } from './text.js';
 
 // Wikidata public query service: no key needed, open CORS
 const ENDPOINT = 'https://query.wikidata.org/sparql';
@@ -53,7 +54,7 @@ function toDoc(row, index) {
     minutes: minutes > 0 ? minutes : null,
     subjects: split(value(row, 'subjects')).slice(0, 6),
     countries: split(value(row, 'countries')),
-    wikipedia: value(row, 'article'),
+    wikipedia: safeUrl(value(row, 'article')),
     wikidata: `https://www.wikidata.org/wiki/${qid}`,
     watch: `https://www.justwatch.com/uk/search?q=${encodeURIComponent(title)}`
   };

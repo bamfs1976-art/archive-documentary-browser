@@ -8,9 +8,20 @@ export function toPlainText(html) {
   if (!source) return '';
   try {
     const doc = new DOMParser().parseFromString(source, 'text/html');
+    doc.querySelectorAll('script, style, noscript, template').forEach(node => node.remove());
     return (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
   } catch {
-    return source.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    return source.replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+}
+
+// Links from API data go into href attributes. Allow https only, so a bad record never becomes a script link.
+export function safeUrl(value) {
+  try {
+    const url = new URL(String(value || ''));
+    return url.protocol === 'https:' ? url.href : '';
+  } catch {
+    return '';
   }
 }
 
