@@ -1,0 +1,28 @@
+{
+  "head": { "vars": ["film", "title", "desc", "links", "article", "released", "director", "minutes", "subjects", "countries"] },
+  "results": {
+    "bindings": [
+      {
+        "film": { "type": "uri", "value": "http://www.wikidata.org/entity/Q900001" },
+        "title": { "xml:lang": "en", "type": "literal", "value": "Fixture Aberfan Story" },
+        "desc": { "xml:lang": "en", "type": "literal", "value": "documentary film about a Welsh mining village" },
+        "links": { "type": "literal", "value": "12" },
+        "article": { "type": "uri", "value": "https://en.wikipedia.org/wiki/Aberfan_disaster" },
+        "released": { "type": "literal", "value": "2016-10-21T00:00:00Z" },
+        "director": { "xml:lang": "en", "type": "literal", "value": "Fixture Director" },
+        "minutes": { "type": "literal", "value": "90" },
+        "subjects": { "type": "literal", "value": "coal mining|disaster" },
+        "countries": { "type": "literal", "value": "Q145" }
+      },
+      {
+        "film": { "type": "uri", "value": "http://www.wikidata.org/entity/Q900002" },
+        "title": { "xml:lang": "en", "type": "literal", "value": "Fixture Penguin March" },
+        "desc": { "xml:lang": "en", "type": "literal", "value": "nature documentary" },
+        "links": { "type": "literal", "value": "10" },
+        "released": { "type": "literal", "value": "2005-01-26T00:00:00Z" },
+        "subjects": { "type": "literal", "value": "" },
+        "countries": { "type": "literal", "value": "Q142" }
+      }
+    ]
+  }
+}

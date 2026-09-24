@@ -66,6 +66,20 @@ Checked pairings:
 - No em dashes.
 - No comma before "and" or "or" in lists.
 
+## Commands
+
+- `npm run dev` starts the dev server on port 3000.
+- `npm run build` builds to `dist`.
+- `npm test` runs the Vitest unit tests in `tests/unit` (happy-dom environment).
+- `npm run test:e2e` runs the Playwright smoke test in `tests/e2e` with fixtures from `tests/e2e/fixtures`.
+- `npm run test:live` runs the same smoke test against the live APIs.
+- `vite preview` serves the CSP from `netlify.toml`, so the smoke test runs under the production policy.
+
+## Version pins
+
+- Vitest stays on 3.x while the app is on Vite 5. Vitest 4 and later need Vite 6 or newer.
+- `@playwright/test` is pinned to an exact version so it matches the installed Chromium build.
+
 ## How to work
 
 - Run `npm run build` and all tests before every commit.

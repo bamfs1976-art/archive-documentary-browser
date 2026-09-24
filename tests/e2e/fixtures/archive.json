@@ -1,0 +1,36 @@
+{
+  "responseHeader": { "status": 0 },
+  "response": {
+    "numFound": 3,
+    "start": 0,
+    "docs": [
+      {
+        "identifier": "fixture-night-mail",
+        "title": "Night Mail",
+        "year": "1936",
+        "description": "<p>The postal special train from London to Scotland.</p>",
+        "subject": ["documentary", "railways", "Britain"],
+        "creator": "GPO Film Unit",
+        "downloads": 5000,
+        "runtime": "00:24:00"
+      },
+      {
+        "identifier": "fixture-coal-face",
+        "title": "Coal Face",
+        "year": "1935",
+        "description": "Coal mining in Britain.",
+        "subject": "documentary",
+        "creator": "GPO Film Unit",
+        "downloads": 3000,
+        "runtime": "12:00"
+      },
+      {
+        "identifier": "fixture-duck-and-cover",
+        "title": "Duck and Cover",
+        "year": "1952",
+        "subject": ["civil defense"],
+        "downloads": 2000
+      }
+    ]
+  }
+}
