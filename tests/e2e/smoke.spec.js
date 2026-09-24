@@ -44,7 +44,7 @@ test('browse both collections and use the details panel by keyboard', async ({ p
   await expect(wales).toHaveAttribute('aria-pressed', 'true');
   const firstCard = results.getByRole('listitem').first().getByRole('button');
   await expect(firstCard).toBeVisible();
-  if (!live) await expect(results.getByRole('listitem')).toHaveCount(1);
+  await expect(firstCard).toContainText('Wales and Britain');
 
   // Open the details panel from the keyboard
   const title = (await firstCard.locator('.title-card__title').innerText()).trim();

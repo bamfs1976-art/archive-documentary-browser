@@ -14,7 +14,9 @@ Three topics: History and war, Society and culture, Wales and Britain.
 ## Layout
 
 - `src/services/archive.js` builds the Archive.org query, parses results and runtimes.
-- `src/services/wikidata.js` holds the SPARQL query, parses rows, filters and sorts modern titles.
+- `src/services/wikidataQuery.js` holds the SPARQL query and row parser. It must run in Node and the browser.
+- `src/services/wikidata.js` loads the snapshot, falls back to a live fetch, filters and sorts modern titles.
+- `scripts/fetch-modern.mjs` saves the snapshot to `src/data/modern.json` before each build. Topics are left out of the file and worked out on load.
 - `src/services/topics.js` defines topics and classifies modern titles.
 - `src/services/text.js` turns HTML into plain text and shortens text.
 - `src/services/storage.js` wraps localStorage with an in-memory fallback.
@@ -69,7 +71,9 @@ Checked pairings:
 ## Commands
 
 - `npm run dev` starts the dev server on port 3000.
-- `npm run build` builds to `dist`.
+- `npm run build` refreshes the Wikidata snapshot, then builds to `dist`.
+- `npm run build:app` builds without contacting Wikidata.
+- `npm run fetch-modern` refreshes `src/data/modern.json` on its own.
 - `npm test` runs the Vitest unit tests in `tests/unit` (happy-dom environment).
 - `npm run test:e2e` runs the Playwright smoke test in `tests/e2e` with fixtures from `tests/e2e/fixtures`.
 - `npm run test:live` runs the same smoke test against the live APIs.

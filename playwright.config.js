@@ -18,7 +18,8 @@ export default defineConfig({
     { name: 'live', timeout: 120_000, use: { live: true } }
   ],
   webServer: {
-    command: `npm run build && npx vite preview --port ${PORT} --strictPort`,
+    // build:app skips the Wikidata refresh, so test runs stay offline
+    command: `npm run build:app && npx vite preview --port ${PORT} --strictPort`,
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000

@@ -31,6 +31,8 @@ npm run build
 
 Output lands in `dist`.
 
+The build first runs `scripts/fetch-modern.mjs`, which saves modern documentaries from Wikidata to `src/data/modern.json`. Commit that file. If Wikidata is slow or down during a build, the script keeps the committed snapshot, prints a warning and lets the build carry on. Use `npm run build:app` to build without contacting Wikidata.
+
 ## Test
 
 ```
@@ -55,7 +57,7 @@ Netlify Drop does not suit the source files. Drop the built `dist` folder instea
 - Wikidata query service: https://query.wikidata.org
 - JustWatch UK search links: https://www.justwatch.com/uk
 
-Modern results cache in the browser for seven days. Wikidata slows at busy times, so the first load takes up to 30 seconds.
+Modern titles load instantly from the snapshot saved at build time. Only when no snapshot exists does the app query Wikidata live, which takes up to 30 seconds, and it caches that result in the browser for seven days.
 
 ## Credits
 
