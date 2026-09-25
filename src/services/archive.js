@@ -88,6 +88,21 @@ function toDoc(raw) {
   };
 }
 
+// Looks up one film for a shared link. The trusted query still applies, so a link can only open
+// a film the app would list anyway, never an arbitrary Archive.org upload. Returns null when not found.
+export async function fetchArchiveDoc(id, { signal } = {}) {
+  if (!/^[A-Za-z0-9._-]{1,100}$/.test(String(id || ''))) return null;
+  const params = new URLSearchParams({ q: `(${buildQuery({})}) AND identifier:"${id}"` });
+  FIELDS.forEach(field => params.append('fl[]', field));
+  params.set('rows', '1');
+  params.set('output', 'json');
+  const response = await fetch(`${API}?${params}`, { signal });
+  if (!response.ok) throw new Error(`Archive.org replied with status ${response.status}`);
+  const json = await response.json();
+  const raw = (json?.response?.docs ?? []).find(d => d.identifier === id);
+  return raw ? toDoc(raw) : null;
+}
+
 export async function fetchArchiveDocs({ topic, sort, query, page, signal }) {
   const params = new URLSearchParams({ q: buildQuery({ topic, query }) });
   FIELDS.forEach(field => params.append('fl[]', field));

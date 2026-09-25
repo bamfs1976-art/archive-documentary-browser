@@ -161,6 +161,7 @@ a:hover { color: var(--red); }
 .facts { color: var(--muted); margin: 0 0 .6rem; }
 .summary { max-width: 68ch; }
 .links { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.25rem 0 .5rem; }
+.copy-status { align-self: center; color: var(--muted); font-size: .95rem; }
 .note { font-size: .92rem; color: var(--muted); margin: 0; }
 
 .player { margin-top: 2.25rem; aspect-ratio: 16 / 9; background: var(--film); border-radius: 3px; overflow: hidden; }

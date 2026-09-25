@@ -2,6 +2,25 @@ import { useEffect, useRef, useState } from 'react';
 import { shorten } from '../services/text.js';
 import { topicLabel } from '../services/topics.js';
 
+// The address already holds this documentary, so sharing means copying it
+function CopyLink() {
+  const [message, setMessage] = useState('');
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setMessage('Link copied');
+    } catch {
+      setMessage('Copying is blocked here. Share the address from your browser bar instead.');
+    }
+  };
+  return (
+    <>
+      <button type="button" className="button" onClick={copy}>Copy link</button>
+      <span className="copy-status" role="status" aria-live="polite">{message}</span>
+    </>
+  );
+}
+
 function ArchiveDetail({ doc }) {
   const [playing, setPlaying] = useState(false);
   const facts = [doc.year, doc.minutes && `${doc.minutes} minutes`, doc.creator].filter(Boolean).join(', ');
@@ -29,6 +48,7 @@ function ArchiveDetail({ doc }) {
       {doc.subjects.length > 0 && <p className="facts">Tagged: {doc.subjects.join(', ')}</p>}
       <p className="links">
         <a className="button" href={doc.page} target="_blank" rel="noopener noreferrer">Open on Archive.org</a>
+        <CopyLink />
       </p>
     </>
   );
@@ -52,6 +72,7 @@ function ModernDetail({ doc }) {
           <a className="button" href={doc.wikipedia} target="_blank" rel="noopener noreferrer">Read on Wikipedia</a>
         )}
         <a className="button" href={doc.wikidata} target="_blank" rel="noopener noreferrer">Wikidata record</a>
+        <CopyLink />
       </p>
       <p className="note">Streaming search opens JustWatch UK in a new tab.</p>
     </>
@@ -79,7 +100,7 @@ export default function DetailDialog({ doc, onClose }) {
       {doc && (
         <div className="detail__body">
           <button type="button" className="detail__close" onClick={onClose} aria-label="Close details">×</button>
-          {doc.kind === 'archive' ? <ArchiveDetail key={doc.id} doc={doc} /> : <ModernDetail doc={doc} />}
+          {doc.kind === 'archive' ? <ArchiveDetail key={doc.id} doc={doc} /> : <ModernDetail key={doc.id} doc={doc} />}
         </div>
       )}
     </dialog>

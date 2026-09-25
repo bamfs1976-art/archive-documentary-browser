@@ -8,6 +8,10 @@ Modern documentaries: notable documentaries released since 1980, drawn from Wiki
 
 No API keys. No accounts. No server.
 
+## Sharing
+
+Every view has its own address. The collection, topic, sort order, search and open documentary all live in the query string, for example `?collection=modern&topic=history&q=coal&doc=Q123`. Back and Forward step through what you did. Copy link in the details panel copies the address of the open documentary. A shared archive link only opens films the app would list anyway.
+
 ## Topics
 
 History and war, Society and culture, Wales and Britain. Archive films filter at the source through Archive.org subject tags. Modern documentaries filter by subject, description and country of origin.

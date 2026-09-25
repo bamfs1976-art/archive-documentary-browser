@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { TOPICS } from './services/topics.js';
 import { filterModern } from './services/wikidata.js';
 import { useArchiveDocs } from './hooks/useArchiveDocs.js';
 import { useModernDocs } from './hooks/useModernDocs.js';
+import { useUrlState } from './hooks/useUrlState.js';
+import { useSelectedDoc } from './hooks/useSelectedDoc.js';
 import { ArchiveCard, ModernCard } from './components/Cards.jsx';
 import DetailDialog from './components/DetailDialog.jsx';
 
@@ -19,13 +21,11 @@ const SORT_LABELS = {
 };
 
 export default function App() {
-  const [source, setSource] = useState('archive');
-  const [topic, setTopic] = useState('all');
-  const [sort, setSort] = useState('popular');
-  const [draft, setDraft] = useState('');
-  const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState(null);
+  const [url, navigate, urlRef] = useUrlState();
+  const { collection: source, topic, sort, q: query } = url;
+  const [draft, setDraft] = useState(query);
   const [modernShown, setModernShown] = useState(MODERN_PAGE);
+  const [notice, setNotice] = useState('');
 
   const archive = useArchiveDocs({ topic, sort, query, enabled: source === 'archive' });
   const modern = useModernDocs(source === 'modern');
@@ -35,15 +35,45 @@ export default function App() {
     [modern.docs, topic, query, sort]
   );
 
-  const resetPaging = () => setModernShown(MODERN_PAGE);
-  const choose = setter => value => { setter(value); resetPaging(); };
+  // Back and Forward can change the search, so keep the box in step with the address
+  useEffect(() => setDraft(query), [query]);
+  useEffect(() => setModernShown(MODERN_PAGE), [source, topic, sort, query]);
+
+  const selection = useSelectedDoc({
+    collection: source,
+    docId: url.doc,
+    archiveItems: archive.items,
+    modernDocs: modern.docs,
+    modernLoaded: modern.docs.length > 0
+  });
+
+  // A shared link to a documentary we cannot show: say so, and drop it from the address
+  useEffect(() => {
+    if (selection.status !== 'missing') return;
+    setNotice('That link points to a documentary we could not find. It may have been removed.');
+    navigate({ doc: '' }, { replace: true });
+  }, [selection.status, navigate]);
+
+  // Name the open documentary in the tab and in bookmarks
+  useEffect(() => {
+    document.title = selection.doc ? `${selection.doc.title} | Documentary Browser` : 'Documentary Browser';
+  }, [selection.doc]);
+
+  const choose = key => value => { setNotice(''); navigate({ [key]: value, doc: '' }); };
 
   const onSearch = event => {
     event.preventDefault();
-    setQuery(draft.trim());
-    resetPaging();
+    choose('q')(draft.trim());
   };
-  const clearSearch = () => { setDraft(''); setQuery(''); resetPaging(); };
+  const clearSearch = () => { setDraft(''); choose('q')(''); };
+
+  const openDoc = doc => { setNotice(''); navigate({ doc: doc.id }, { fromList: true }); };
+  const closeDoc = () => {
+    if (!urlRef.current.doc) return;
+    // Opened from the grid: step back so Back does not reopen it. Opened from a shared link: just drop it.
+    if (window.history.state?.fromList) window.history.back();
+    else navigate({ doc: '' }, { replace: true });
+  };
 
   const isArchive = source === 'archive';
   const loading = isArchive ? archive.loading : modern.loading;
@@ -74,7 +104,7 @@ export default function App() {
               type="button"
               className="source"
               aria-pressed={source === s.id}
-              onClick={() => { setSource(s.id); resetPaging(); }}
+              onClick={() => choose('collection')(s.id)}
             >
               <span className="source__label">{s.label}</span>
               <span className="source__hint">{s.hint}</span>
@@ -85,7 +115,7 @@ export default function App() {
         <section className="controls" aria-label="Filter documentaries">
           <div className="topics" role="group" aria-label="Topic">
             {TOPICS.map(t => (
-              <button key={t.id} type="button" className="pill" aria-pressed={topic === t.id} onClick={() => choose(setTopic)(t.id)}>
+              <button key={t.id} type="button" className="pill" aria-pressed={topic === t.id} onClick={() => choose('topic')(t.id)}>
                 {t.label}
               </button>
             ))}
@@ -108,7 +138,7 @@ export default function App() {
 
             <label className="sort">
               <span>Sort</span>
-              <select value={sort} onChange={e => choose(setSort)(e.target.value)}>
+              <select value={sort} onChange={e => choose('sort')(e.target.value)}>
                 {Object.entries(SORT_LABELS[source]).map(([id, label]) => (
                   <option key={id} value={id}>{label}</option>
                 ))}
@@ -120,6 +150,12 @@ export default function App() {
         <section id="results" className="results" aria-labelledby="results-heading" tabIndex={-1}>
           <h2 id="results-heading" className="visually-hidden">Results</h2>
           <p className="status" role="status" aria-live="polite">{status}</p>
+
+          {notice && (
+            <div className="message">
+              <p>{notice}</p>
+            </div>
+          )}
 
           {error && (
             <div className="message" role="alert">
@@ -137,8 +173,8 @@ export default function App() {
           <ul className={isArchive ? 'grid grid--archive' : 'grid grid--modern'}>
             {items.map(doc =>
               isArchive
-                ? <ArchiveCard key={doc.id} doc={doc} onOpen={setSelected} />
-                : <ModernCard key={doc.id} doc={doc} onOpen={setSelected} />
+                ? <ArchiveCard key={doc.id} doc={doc} onOpen={openDoc} />
+                : <ModernCard key={doc.id} doc={doc} onOpen={openDoc} />
             )}
           </ul>
 
@@ -162,7 +198,7 @@ export default function App() {
         <p>Based on the idea of archive-movie-browser by amponce, MIT licence.</p>
       </footer>
 
-      <DetailDialog doc={selected} onClose={() => setSelected(null)} />
+      <DetailDialog doc={selection.doc} onClose={closeDoc} />
     </div>
   );
 }

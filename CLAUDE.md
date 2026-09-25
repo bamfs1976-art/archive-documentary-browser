@@ -21,7 +21,8 @@ Three topics: History and war, Society and culture, Wales and Britain.
 - `src/services/text.js` turns HTML into plain text and shortens text.
 - `src/services/storage.js` wraps localStorage with an in-memory fallback.
 - `src/hooks/` fetches and pages data. `src/components/` renders cards and the details dialog.
-- `src/App.jsx` holds UI state. `src/index.css` holds all styles and colour tokens.
+- `src/services/url.js` parses and builds the query string. `src/hooks/useUrlState.js` syncs it with history. `src/hooks/useSelectedDoc.js` resolves `doc` to a documentary.
+- `src/App.jsx` holds UI state, with the address as the source of truth for collection, topic, sort, search and the open documentary. `src/index.css` holds all styles and colour tokens.
 
 ## Fixed decisions (ask Anthony before changing)
 
@@ -75,6 +76,8 @@ Checked pairings:
 | Muted on white | 7.1:1 |
 
 ## Security
+
+- A shared link must never widen what the app shows. `fetchArchiveDoc` looks films up inside the trusted query, and `url.js` validates every parameter.
 
 - Never use `dangerouslySetInnerHTML` with API data. Convert HTML to text with `toPlainText`.
 - Only render `https:` URLs from API data in `href` or `src`.
