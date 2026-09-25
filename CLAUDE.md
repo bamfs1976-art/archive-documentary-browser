@@ -14,9 +14,10 @@ Three topics: History and war, Society and culture, Wales and Britain.
 ## Layout
 
 - `src/services/archive.js` builds the Archive.org query, parses results and runtimes.
-- `src/services/wikidataQuery.js` holds the SPARQL query and row parser. It must run in Node and the browser.
+- `src/services/wikidataQuery.js` holds the SPARQL queries (a title list, detail batches, and one combined query for the browser's last-resort fallback), the row parser, the fiction rule and `hydrate`. It must run in Node and the browser.
+- `src/services/wikidataTags.js` tags titles from Wikidata's structure: topic, shortcut and broadcaster roots, and the level-by-level climb.
 - `src/services/wikidata.js` loads the snapshot, falls back to a live fetch, filters and sorts modern titles.
-- `scripts/fetch-modern.mjs` saves the snapshot to `src/data/modern.json` before each build. Topics are left out of the file and worked out on load.
+- `scripts/fetch-modern.mjs` builds the snapshot in stages: title list, detail batches of 500, then the tagging climb. It writes `src/data/modern.json` without raw IDs or rebuildable links. Topics are worked out on load from the stored tags, with keywords as the backup.
 - `src/services/topics.js` defines topics and classifies modern titles.
 - `src/services/text.js` turns HTML into plain text and shortens text.
 - `src/services/storage.js` wraps localStorage with an in-memory fallback.
@@ -53,6 +54,15 @@ Three topics: History and war, Society and culture, Wales and Britain.
 - Hide single items through `src/data/blocklist.json`: an array of `{ "id": "identifier", "reason": "why" }`.
 - In cloud sessions Node's fetch ignores the proxy. Prefix scripts that call the APIs with `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt`.
 - Sandbox note: headless Chromium in cloud sessions rejects the proxy's HTTPS, so `npm run test:live` only works on a normal machine. Check live behaviour on the Netlify preview.
+
+## Wikidata lessons (25 September 2026)
+
+- Wikidata stops any query at 60 seconds, and load varies: a query that ran in 15 seconds timed out half an hour later. Keep every build query small: list IDs first, then fetch in batches.
+- Never use a transitive path such as `(wdt:P31|wdt:P279)*` against fixed roots for many items. It times out. Climb one level of direct parents per query instead (`wikidataTags.js`).
+- Items typed only as documentary film (P31 Q93204) make the selection slow and add 3 titles. They are left out.
+- Broad roots (culture, society, art) and deep climbs (6 levels) mislabel titles. Use 4 levels and specific roots.
+- Wikidata has almost no documentaries tagged with the English Civil War, Tudors, Plantagenets, Stuarts or Normans. Shortcuts rely on keyword phrases for those.
+- Wikidata limits query time per client. Expect 429 replies; the build waits as asked and retries.
 
 ## Accessibility
 

@@ -1,6 +1,5 @@
 import { readCache, writeCache } from './storage.js';
-import { classify } from './topics.js';
-import { ENDPOINT, QUERY, parseBindings } from './wikidataQuery.js';
+import { ENDPOINT, QUERY, hydrate, parseBindings } from './wikidataQuery.js';
 
 const CACHE_KEY = 'docs:wikidata:v1';
 const CACHE_AGE_MS = 7 * 24 * 60 * 60 * 1000;
@@ -15,8 +14,7 @@ async function loadSnapshot() {
   try {
     const snapshot = await load();
     const docs = Array.isArray(snapshot?.docs) ? snapshot.docs : [];
-    // Classify on load, so topic rule changes apply even when the build kept an older snapshot
-    return docs.length ? docs.map(d => ({ ...d, topics: classify(d) })) : null;
+    return docs.length ? docs.map(hydrate) : null;
   } catch {
     return null;
   }

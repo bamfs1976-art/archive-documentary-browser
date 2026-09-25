@@ -1,4 +1,4 @@
-import { classify } from './topics.js';
+import { classify, shortcutsFor } from './topics.js';
 import { safeUrl } from './text.js';
 import modernBlocklist from '../data/modernBlocklist.js';
 
@@ -15,22 +15,14 @@ export const ENDPOINT = 'https://query.wikidata.org/sparql';
 // Best known first. P57 director. P2047 duration, converted to minutes from seconds Q11574 or hours Q25235,
 // taking the longest cut when several are listed. P921 main subject, P495 country of origin, P136 genre,
 // P449 original broadcaster and P272 production company. The IDs feed the tagging step in wikidataTags.js.
-export const QUERY = `
-SELECT ?film (SAMPLE(?form) AS ?format) ?title ?desc ?links ?article
-  (MIN(?date) AS ?released)
-  (SAMPLE(?dirName) AS ?director)
-  (MAX(?dur) AS ?minutes)
-  (GROUP_CONCAT(DISTINCT ?subjName; separator="|") AS ?subjects)
-  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?subj), "/entity/"); separator="|") AS ?subjectIds)
-  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?country), "/entity/"); separator="|") AS ?countries)
-  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?genre), "/entity/"); separator="|") AS ?genres)
-  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?org), "/entity/"); separator="|") AS ?orgs)
-WHERE {
+const SELECTION = `
   VALUES ?docGenre { wd:Q93204 wd:Q7603925 wd:Q1760864 }
   VALUES (?type ?form) { (wd:Q11424 "film") (wd:Q5398426 "series") (wd:Q1259759 "series") }
   ?film wdt:P136 ?docGenre ; wdt:P31 ?type .
   ?film wikibase:sitelinks ?links .
-  FILTER(?links >= 4)
+  FILTER(?links >= 4)`;
+
+const DETAILS = `
   ?film rdfs:label ?title . FILTER(LANG(?title) = "en")
   OPTIONAL { ?film wdt:P577|wdt:P580 ?date . }
   OPTIONAL { ?film schema:description ?desc . FILTER(LANG(?desc) = "en") }
@@ -44,7 +36,39 @@ WHERE {
   OPTIONAL { ?film wdt:P495 ?country . }
   OPTIONAL { ?film wdt:P136 ?genre . }
   OPTIONAL { ?film wdt:P449|wdt:P272 ?org . }
-  OPTIONAL { ?article schema:about ?film ; schema:isPartOf <https://en.wikipedia.org/> . }
+  OPTIONAL { ?article schema:about ?film ; schema:isPartOf <https://en.wikipedia.org/> . }`;
+
+const FIELDS = `?film ?title ?desc ?links ?article
+  (MIN(?date) AS ?released)
+  (SAMPLE(?dirName) AS ?director)
+  (MAX(?dur) AS ?minutes)
+  (GROUP_CONCAT(DISTINCT ?subjName; separator="|") AS ?subjects)
+  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?subj), "/entity/"); separator="|") AS ?subjectIds)
+  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?country), "/entity/"); separator="|") AS ?countries)
+  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?genre), "/entity/"); separator="|") AS ?genres)
+  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?org), "/entity/"); separator="|") AS ?orgs)`;
+
+// The build works in two stages, because one query for everything sometimes passes Wikidata's 60 second limit.
+// Stage one lists the qualifying titles (about 9 seconds). Stage two fetches details in batches.
+export const IDS_QUERY = `
+SELECT ?film (SAMPLE(?form) AS ?format) (MAX(?links) AS ?sitelinks) WHERE {${SELECTION}
+}
+GROUP BY ?film
+ORDER BY DESC(?sitelinks)
+LIMIT 5000`;
+
+export const DETAILS_BATCH = 500;
+
+export const detailsQuery = ids => `
+SELECT ${FIELDS} WHERE {
+  VALUES ?film { ${ids.filter(id => /^Q\d{1,12}$/.test(id)).map(id => `wd:${id}`).join(' ')} }
+  ?film wikibase:sitelinks ?links .${DETAILS}
+}
+GROUP BY ?film ?title ?desc ?links ?article`;
+
+// Everything in one query. Only the browser uses it, as a last resort when no snapshot was built.
+export const QUERY = `
+SELECT (SAMPLE(?form) AS ?format) ${FIELDS} WHERE {${SELECTION}${DETAILS}
 }
 GROUP BY ?film ?title ?desc ?links ?article
 ORDER BY DESC(?links)
@@ -112,4 +136,18 @@ export function parseBindings(json) {
     .filter(d => d.title && !/^Q\d+$/.test(d.title) && !seen.has(d.id) && seen.add(d.id))
     .filter(d => !BLOCKED.has(d.id) && !isFiction(d.genres))
     .map((d, index) => ({ ...d, rank: index }));
+}
+
+// The snapshot leaves out what can be rebuilt from the id and title, to keep the download small.
+// Topics are worked out here too, so keyword rule changes apply even when the build kept an older snapshot.
+export function hydrate(saved) {
+  const doc = {
+    kind: 'modern',
+    wikidata: `https://www.wikidata.org/wiki/${saved.id}`,
+    watch: `https://www.justwatch.com/uk/search?q=${encodeURIComponent(saved.title)}`,
+    subjects: [],
+    countries: [],
+    ...saved
+  };
+  return { ...doc, topics: classify(doc), shortcuts: shortcutsFor(doc), makers: saved.tags?.makers ?? [] };
 }

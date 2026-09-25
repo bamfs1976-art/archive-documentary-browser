@@ -22,6 +22,18 @@ describe('snapshot', () => {
     expect(docs[0].topics).toEqual(['britain']);
   });
 
+  it('rebuilds the links the snapshot leaves out', async () => {
+    vi.stubGlobal('fetch', vi.fn());
+    const [doc] = await fetchModernDocs();
+    expect(doc).toMatchObject({
+      kind: 'modern',
+      wikidata: 'https://www.wikidata.org/wiki/Q1',
+      watch: 'https://www.justwatch.com/uk/search?q=Swansea%20Story',
+      shortcuts: [],
+      makers: []
+    });
+  });
+
   it('skips the snapshot when asked for fresh data', async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ results: { bindings: [] } }) });
     vi.stubGlobal('fetch', fetchMock);
