@@ -1,27 +1,1060 @@
 {
-  "head": { "vars": ["film", "title", "desc", "links", "article", "released", "director", "minutes", "subjects", "countries"] },
+  "head": {
+    "vars": [
+      "film",
+      "title",
+      "desc",
+      "links",
+      "article",
+      "released",
+      "director",
+      "minutes",
+      "subjects",
+      "countries",
+      "genres"
+    ]
+  },
   "results": {
     "bindings": [
       {
-        "film": { "type": "uri", "value": "http://www.wikidata.org/entity/Q900001" },
-        "title": { "xml:lang": "en", "type": "literal", "value": "Fixture Aberfan Story" },
-        "desc": { "xml:lang": "en", "type": "literal", "value": "documentary film about a Welsh mining village" },
-        "links": { "type": "literal", "value": "12" },
-        "article": { "type": "uri", "value": "https://en.wikipedia.org/wiki/Aberfan_disaster" },
-        "released": { "type": "literal", "value": "2016-10-21T00:00:00Z" },
-        "director": { "xml:lang": "en", "type": "literal", "value": "Fixture Director" },
-        "minutes": { "type": "literal", "value": "90" },
-        "subjects": { "type": "literal", "value": "coal mining|disaster" },
-        "countries": { "type": "literal", "value": "Q145" }
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q206388"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Once Upon a Time in America"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1984 film by Sergio Leone"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "63"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Once_Upon_a_Time_in_America"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "1984-05-23T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sergio Leone"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "229"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "organized crime"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q142|Q38|Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q116514801|Q113485322|Q21401869|Q19367312|Q17013749|Q7444356|Q2484376|Q959790|Q652256|Q542475|Q188473|Q172980|Q130232|Q93204"
+        }
       },
       {
-        "film": { "type": "uri", "value": "http://www.wikidata.org/entity/Q900002" },
-        "title": { "xml:lang": "en", "type": "literal", "value": "Fixture Penguin March" },
-        "desc": { "xml:lang": "en", "type": "literal", "value": "nature documentary" },
-        "links": { "type": "literal", "value": "10" },
-        "released": { "type": "literal", "value": "2005-01-26T00:00:00Z" },
-        "subjects": { "type": "literal", "value": "" },
-        "countries": { "type": "literal", "value": "Q142" }
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q204670"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "An Inconvenient Truth"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2006 film by Davis Guggenheim"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "49"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/An_Inconvenient_Truth"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2006-01-24T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Davis Guggenheim"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "100"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": ""
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q221852"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Fahrenheit 9/11"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2004 film directed by Michael Moore"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "49"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Fahrenheit_9/11"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2004-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Michael Moore"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "122"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "September 11 attacks"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q116542843"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "20 Days in Mariupol"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2023 documentary film"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "41"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/20_Days_in_Mariupol"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2023-01-20T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Mstyslav Chernov"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "97"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "Siege of Mariupol"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q212|Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q369747|Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q330113"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "March of the Penguins"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2005 documentary film by Luc Jacquet"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "40"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/March_of_the_Penguins"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2005-01-21T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Luc Jacquet"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "84"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "Emperor Penguin|Antarctica"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q142"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q1760864|Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1127828"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Koyaanisqatsi"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "1982 film by Godfrey Reggio"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "40"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Koyaanisqatsi"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "1982-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Godfrey Reggio"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "87"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": ""
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q165394"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Bowling for Columbine"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2002 documentary film directed by Michael Moore"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "36"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Bowling_for_Columbine"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2002-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Michael Moore"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "120"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": ""
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q183|Q30|Q16"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q186014"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Zeitgeist: The Movie"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2007 film directed by Peter Joseph"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "36"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Zeitgeist:_The_Movie"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2007-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Peter Joseph"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "116"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "September 11 attacks"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q369747|Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q44447"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Michael Jackson's This Is It"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2009 film by Michael Jackson, Kenny Ortega"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "36"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Michael_Jackson%27s_This_Is_It"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2009-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Kenny Ortega"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "111"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": ""
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q842256|Q645928|Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1059540"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Caesar Must Die"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2012 film by Paolo Taviani, Vittorio Taviani"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "34"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Caesar_Must_Die"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2012-02-11T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Paolo Taviani"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "76"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": ""
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q38"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q622370|Q586250|Q130232|Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q1277684"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Earthlings"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2005 film by Shaun Monson"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "34"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Earthlings_(film)"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2005-09-24T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Shaun Monson"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "95"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "speciesism|cruelty to animals"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q640395"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Truth in Numbers? Everything, According to Wikipedia"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2010 American documentary film"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "33"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Truth_in_Numbers%3F"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2010-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Nic Hill"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "85"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "Internet|Wikipedia"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q382882"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Sicko"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2007 film by Michael Moore"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "33"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Sicko"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2007-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Michael Moore"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "123"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "healthcare in the United States"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q591709"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Religulous"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2008 film by Larry Charles"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "31"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Religulous"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2008-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Larry Charles"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "101"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "faith|religion|atheism"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q637087"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Home"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2009 documentary film by Yann Arthus-Bertrand"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "31"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Home_(2009_film)"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2009-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Yann Arthus-Bertrand"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "93"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "environmental issue"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q142"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q19803462"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Amy"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2015 film directed by Asif Kapadia"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "31"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Amy_(2015_film)"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2015-06-11T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Asif Kapadia"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "128"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "Amy Winehouse"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q145"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q842256|Q645928|Q130232|Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q60795735"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Leaving Neverland"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2019 documentary film"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "31"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Leaving_Neverland"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2019-01-01T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Dan Reed"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "236"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "Michael Jackson sexual abuse allegations|Neverland Ranch|Michael Jackson"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q145|Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q745841"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Queen on Fire – Live at the Bowl"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2004 live album by Queen"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "28"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Queen_on_Fire_%E2%80%93_Live_at_the_Bowl"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2004-10-25T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Gavin Taylor"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "170"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": ""
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q145"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q842256|Q93204|Q11399"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q18218448"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Citizenfour"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2014 US documentary film by Laura Poitras about NSA whistleblower Edward Snowden"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "28"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/Citizenfour"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2014-10-10T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Laura Poitras"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "114"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "global surveillance disclosures (2013–present)|Edward Snowden"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q183|Q145|Q30"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
+      },
+      {
+        "film": {
+          "type": "uri",
+          "value": "http://www.wikidata.org/entity/Q7712287"
+        },
+        "title": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "The Act of Killing"
+        },
+        "desc": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "2012 film directed by Joshua Oppenheimer"
+        },
+        "links": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+          "type": "literal",
+          "value": "27"
+        },
+        "article": {
+          "type": "uri",
+          "value": "https://en.wikipedia.org/wiki/The_Act_of_Killing"
+        },
+        "released": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "type": "literal",
+          "value": "2012-08-31T00:00:00Z"
+        },
+        "director": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Joshua Oppenheimer"
+        },
+        "minutes": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "159"
+        },
+        "subjects": {
+          "type": "literal",
+          "value": "psychology|massacre|death squad"
+        },
+        "countries": {
+          "type": "literal",
+          "value": "Q145|Q35|Q20"
+        },
+        "genres": {
+          "type": "literal",
+          "value": "Q93204"
+        }
       }
     ]
   }

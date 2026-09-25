@@ -1,5 +1,5 @@
 import { first, asList, toPlainText } from './text.js';
-import blocklist from '../data/blocklist.json';
+import blocklist from '../data/blocklist.json' with { type: 'json' };
 
 // Archive.org advanced search: no key needed
 const API = 'https://archive.org/advancedsearch.php';

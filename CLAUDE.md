@@ -51,6 +51,7 @@ Three topics: History and war, Society and culture, Wales and Britain.
 - Never trust `newsandpublicaffairs` as a whole. It holds 3.4 million items, mostly community access TV, raw news footage and militant propaganda from `iraq_war` and `iraq_middleeast`.
 - Trusted in full: `prelinger`, `universal_newsreels`. Trusted with a documentary or newsreel tag: `usgovfilms`, `feature_films`, `moviesandfilms`, `silent_films`, `short_films`.
 - Hide single items through `src/data/blocklist.json`: an array of `{ "id": "identifier", "reason": "why" }`.
+- In cloud sessions Node's fetch ignores the proxy. Prefix scripts that call the APIs with `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt`.
 - Sandbox note: headless Chromium in cloud sessions rejects the proxy's HTTPS, so `npm run test:live` only works on a normal machine. Check live behaviour on the Netlify preview.
 
 ## Accessibility
@@ -91,8 +92,9 @@ Checked pairings:
 - `npm run build` refreshes the Wikidata snapshot, then builds to `dist`.
 - `npm run build:app` builds without contacting Wikidata.
 - `npm run fetch-modern` refreshes `src/data/modern.json` on its own.
+- `npm run record-fixtures` re-records the smoke test fixtures from the live APIs, trimmed.
 - `npm test` runs the Vitest unit tests in `tests/unit` (happy-dom environment).
-- `npm run test:e2e` runs the Playwright smoke test in `tests/e2e` with fixtures from `tests/e2e/fixtures`.
+- `npm run test:e2e` runs the Playwright smoke test in `tests/e2e` with real responses recorded in `tests/e2e/fixtures`.
 - `npm run test:live` runs the same smoke test against the live APIs.
 - `vite preview` serves the CSP from `netlify.toml`, so the smoke test runs under the production policy.
 

@@ -39,6 +39,7 @@ The build first runs `scripts/fetch-modern.mjs`, which saves modern documentarie
 npm test              # unit tests (Vitest)
 npm run test:e2e      # browser smoke test with recorded API responses
 npm run test:live     # the same smoke test against the live APIs
+npm run record-fixtures  # re-record the smoke test responses from the live APIs
 ```
 
 The smoke test runs the production build under the same Content Security Policy as `netlify.toml`, and fails if the policy blocks anything. On a new machine, run `npx playwright install chromium` once first.

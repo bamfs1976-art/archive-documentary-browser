@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "fetch-modern": "node scripts/fetch-modern.mjs",
+    "record-fixtures": "node scripts/record-fixtures.mjs",
     "build": "node scripts/fetch-modern.mjs && vite build",
     "build:app": "vite build",
     "preview": "vite preview",

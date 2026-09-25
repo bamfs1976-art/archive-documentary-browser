@@ -1,17 +1,19 @@
 import { readFileSync } from 'node:fs';
 import { expect, test as base } from '@playwright/test';
 
-// `npm run test:e2e` answers every API call from tests/e2e/fixtures. `npm run test:live` uses the real APIs.
+// `npm run test:e2e` answers every API call from tests/e2e/fixtures: real responses recorded with
+// `npm run record-fixtures`, then trimmed. The build includes the committed Wikidata snapshot, so the
+// Wikidata fixture only answers if the snapshot is missing. `npm run test:live` uses the real APIs.
 const test = base.extend({ live: [false, { option: true }] });
 const fixture = name => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
-const thumbnail = readFileSync(new URL('../../public/icon-180.png', import.meta.url));
+const thumbnail = readFileSync(new URL('./fixtures/thumbnail.jpg', import.meta.url));
 
 test.beforeEach(async ({ page, live }) => {
   if (live) return;
   await page.route('https://archive.org/advancedsearch.php**', route =>
     route.fulfill({ contentType: 'application/json', body: fixture('archive.json') }));
   await page.route('https://archive.org/services/img/**', route =>
-    route.fulfill({ contentType: 'image/png', body: thumbnail }));
+    route.fulfill({ contentType: 'image/jpeg', body: thumbnail }));
   await page.route('https://query.wikidata.org/**', route =>
     route.fulfill({ contentType: 'application/sparql-results+json', body: fixture('wikidata.json') }));
   // Keep the run offline and fast. System fonts stand in for the web fonts.

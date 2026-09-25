@@ -1,35 +1,165 @@
 {
-  "responseHeader": { "status": 0 },
+  "responseHeader": {
+    "status": 0,
+    "QTime": 2064,
+    "params": {
+      "query": "mediatype:movies AND (collection:(prelinger OR universal_newsreels) OR (collection:(usgovfilms OR feature_films OR moviesandfilms OR silent_films OR short_films) AND subject:(documentary OR documentaries OR newsreel OR newsreels))) AND NOT collection:(movie_trailers_unsorted OR stock_footage OR 35mmstockfootage OR home_movies OR prelinger_mashups OR iraq_war OR iraq_middleeast OR iraq_911 OR community_media OR royal_society_arts OR sept_11_tv_archive OR stream_only) AND NOT title:(&quot;home movies&quot; OR &quot;television commercials&quot; OR trailer OR &quot;stock footage&quot;)",
+      "qin": "mediatype:movies AND (collection:(prelinger OR universal_newsreels) OR (collection:(usgovfilms OR feature_films OR moviesandfilms OR silent_films OR short_films) AND subject:(documentary OR documentaries OR newsreel OR newsreels))) AND NOT collection:(movie_trailers_unsorted OR stock_footage OR 35mmstockfootage OR home_movies OR prelinger_mashups OR iraq_war OR iraq_middleeast OR iraq_911 OR community_media OR royal_society_arts OR sept_11_tv_archive OR stream_only) AND NOT title:(&quot;home movies&quot; OR &quot;television commercials&quot; OR trailer OR &quot;stock footage&quot;)",
+      "fields": "identifier,title,year,description,subject,creator,downloads,runtime",
+      "wt": "json",
+      "sort": "downloads desc",
+      "rows": 36,
+      "start": 0
+    }
+  },
   "response": {
-    "numFound": 3,
+    "numFound": 10598,
     "start": 0,
     "docs": [
       {
-        "identifier": "fixture-night-mail",
-        "title": "Night Mail",
-        "year": "1936",
-        "description": "<p>The postal special train from London to Scotland.</p>",
-        "subject": ["documentary", "railways", "Britain"],
-        "creator": "GPO Film Unit",
-        "downloads": 5000,
-        "runtime": "00:24:00"
+        "creator": "Castle Films",
+        "description": "Complete presentation of the banana industry from the clearing of the jungle and the planting to the shipment of the fruit to the American markets.",
+        "downloads": 27201041,
+        "identifier": "AboutBan1935",
+        "runtime": "11:03",
+        "subject": [
+          "Agriculture: Bananas",
+          "Central America"
+        ],
+        "title": "About Bananas",
+        "year": 1935
       },
       {
-        "identifier": "fixture-coal-face",
-        "title": "Coal Face",
-        "year": "1935",
-        "description": "Coal mining in Britain.",
-        "subject": "documentary",
-        "creator": "GPO Film Unit",
-        "downloads": 3000,
-        "runtime": "12:00"
+        "creator": "Handy (Jam) Organization",
+        "description": "Epic history of industrial medicine in the first half of the 20th century, showing how manufacturers and the medical profession came to terms with one another and culminating in GM's rehabilitation program for returned World War II veterans. Directed by Haford Kerbawy.",
+        "downloads": 13502536,
+        "identifier": "Doctorin1946",
+        "runtime": "18:47",
+        "subject": [
+          "Medicine: Industrial medicine",
+          "Medicine: Occupational health",
+          "World War II: Postwar issues"
+        ],
+        "title": "Doctor in Industry (Part I)",
+        "year": 1946
       },
       {
-        "identifier": "fixture-duck-and-cover",
-        "title": "Duck and Cover",
-        "year": "1952",
-        "subject": ["civil defense"],
-        "downloads": 2000
+        "creator": "Centron Corporation",
+        "description": "Young girl's mirror image teaches her fundamentals of good posture.",
+        "downloads": 10636630,
+        "identifier": "HealthYo1953",
+        "runtime": "10:20",
+        "subject": "Health and hygiene",
+        "title": "Health: Your Posture",
+        "year": 1953
+      },
+      {
+        "creator": "Unknown",
+        "description": "Promotional film for \"Nutrilite,\" a 1950s-vintage food supplement.",
+        "downloads": 10535385,
+        "identifier": "FromtheG1954",
+        "runtime": "18:31",
+        "subject": [
+          "Agriculture: Food industry: Supplements",
+          "Nutrition"
+        ],
+        "title": "From the Ground Up",
+        "year": 1954
+      },
+      {
+        "creator": "Encyclopaedia Britannica Films",
+        "description": "Told from the viewpoint of a child, this film emphasizes that children should train themselves in good sleeping habits. In typical \"Goofus and Gallant\" style, it shows the advantages a well-rested kid has over his poor-sleeping classmate. Dreams are presented as a normal part of sleeping, and there is a funny dream sequence.",
+        "downloads": 5944554,
+        "identifier": "Sleepfor1950",
+        "runtime": "10:44",
+        "subject": [
+          "Health and hygiene",
+          "Dreams",
+          "Sleep"
+        ],
+        "title": "Sleep for Health",
+        "year": 1950
+      },
+      {
+        "creator": "Coronet Instructional Films",
+        "description": "How young children must behave to avoid transmitting germs to one another.",
+        "downloads": 5744948,
+        "identifier": "JoanAvoi1947",
+        "runtime": "10:24",
+        "subject": "Health and hygiene",
+        "title": "Joan Avoids a Cold",
+        "year": 1947
+      },
+      {
+        "creator": "Encyclopaedia Britannica Films",
+        "description": "Ralph learns the five food groups, helping him to eat a balanced diet, and has more fun because of his better health.",
+        "downloads": 5427057,
+        "identifier": "EatforHe1954",
+        "runtime": "10:23",
+        "subject": [
+          "Health and hygiene",
+          "Food",
+          "Nutrition"
+        ],
+        "title": "Eat for Health",
+        "year": 1954
+      },
+      {
+        "downloads": 4840484,
+        "identifier": "breath_takers_2",
+        "title": "Breath-Takers, 2"
+      },
+      {
+        "description": "Presented by: U.S. Department of Health, Education and Welfare, Public Health Service and Bureau State Services. Produced by the Communicable Disease Center in cooperation with the Georgia Department of Public Health and the Muscogee Health Department. 0647 PA8739 Babies and Breadwinners",
+        "downloads": 3589310,
+        "identifier": "babies_and_breadwinners_2",
+        "runtime": "0:09:56",
+        "subject": [
+          "Motion Pictures: Government",
+          "Health and Hygiene",
+          "Medicine: Infectious Diseases"
+        ],
+        "title": "Babies and Breadwinners (Part II)"
+      },
+      {
+        "creator": "Professional Arts, Inc.",
+        "description": "A Right to Health, Neighborhood Health Centers in Profile. A Production of Professional Arts, Inc. in San Mateo, CA for the Office of Health Affairs and Office of Economic Opportunity. Directed and Produced by David W. Parker, PhD, Written by Parker and William J. Bicknell, M.D., shot and edited by Peter P. Drowne, narrated by Earle Marsh, M.D. 0726 PA8850 Right to Health, A",
+        "downloads": 3413349,
+        "identifier": "right_to_health_1",
+        "runtime": "00:15:35",
+        "subject": [
+          "Motion Pictures: Sponsored",
+          "Health and Hygiene",
+          "Medicine: Public Health"
+        ],
+        "title": "Right to Health, A (Part I)"
+      },
+      {
+        "creator": "Holmes (Burton) Films, Inc.",
+        "description": "Opportunities for employment servicing America's vast motor fleet.",
+        "downloads": 3181424,
+        "identifier": "Automoti1940",
+        "runtime": "10:02",
+        "subject": [
+          "Occupations: Automotive",
+          "Car culture: General",
+          "Automobiles: Service and repair"
+        ],
+        "title": "Automotive Service",
+        "year": 1940
+      },
+      {
+        "creator": "Encyclopaedia Britannica Films",
+        "description": "Structure of the skin; good cleanliness habits; the proper way to wash; the correct use of soap.",
+        "downloads": 2903313,
+        "identifier": "Careofth1949",
+        "runtime": "10:19",
+        "subject": [
+          "Health and hygiene",
+          "Medicine: Dermatology"
+        ],
+        "title": "Care of the Skin",
+        "year": 1949
       }
     ]
   }
