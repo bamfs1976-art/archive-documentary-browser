@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchModernDocs, filterModern } from '../../src/services/wikidata.js';
+
+// These tests cover the live fetch, so the snapshot must look empty. wikidata-snapshot.test.js covers the snapshot.
+vi.mock('../../src/data/modern.json', () => ({ default: { docs: [] } }));
+
+const { fetchModernDocs, filterModern } = await import('../../src/services/wikidata.js');
 
 const lit = value => ({ type: 'literal', value: String(value) });
 const row = ({ qid, title, released = '2000-01-01T00:00:00Z', ...rest }) => {
