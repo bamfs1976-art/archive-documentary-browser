@@ -35,10 +35,12 @@ export async function fetchModernDocs({ signal, fresh = false } = {}) {
   return docs;
 }
 
-export function filterModern(docs, { topic, query, sort }) {
+export function filterModern(docs, { topic, query, sort, subject = '', maker = '' }) {
   const words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
   const matches = docs.filter(d => {
     if (topic !== 'all' && !d.topics.includes(topic)) return false;
+    if (subject && !(d.shortcuts ?? []).includes(subject)) return false;
+    if (maker && !(d.makers ?? []).includes(maker)) return false;
     if (!words.length) return true;
     const haystack = [d.title, d.director, d.description, ...d.subjects].join(' ').toLowerCase();
     return words.every(w => haystack.includes(w));

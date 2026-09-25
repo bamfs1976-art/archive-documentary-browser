@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { shorten } from '../services/text.js';
-import { topicLabel } from '../services/topics.js';
+import { listText, shorten } from '../services/text.js';
+import { makerLabel, shortcutLabel, topicLabel } from '../services/topics.js';
 
 // The address already holds this documentary, so sharing means copying it
 function CopyLink() {
@@ -55,8 +55,14 @@ function ArchiveDetail({ doc }) {
 }
 
 function ModernDetail({ doc }) {
-  const facts = [doc.year, doc.minutes && `${doc.minutes} minutes`, doc.director && `directed by ${doc.director}`]
-    .filter(Boolean).join(', ');
+  const facts = [
+    doc.year,
+    doc.format === 'series' && 'series',
+    doc.minutes && `${doc.minutes} minutes${doc.format === 'series' ? ' in all' : ''}`,
+    doc.director && `directed by ${doc.director}`
+  ].filter(Boolean).join(', ');
+  const makers = (doc.makers ?? []).map(makerLabel).filter(Boolean);
+  const shortcuts = (doc.shortcuts ?? []).map(shortcutLabel).filter(Boolean);
   return (
     <>
       <h2 id="dialog-title">{doc.title}</h2>
@@ -64,6 +70,8 @@ function ModernDetail({ doc }) {
       {doc.description && <p className="summary">{doc.description}</p>}
       {doc.subjects.length > 0 && <p className="facts">About: {doc.subjects.join(', ')}</p>}
       {doc.topics.length > 0 && <p className="facts">Topics: {doc.topics.map(topicLabel).join(', ')}</p>}
+      {shortcuts.length > 0 && <p className="facts">Subject: {shortcuts.join(', ')}</p>}
+      {makers.length > 0 && <p className="facts">Made by {listText(makers)}</p>}
       <p className="links">
         <a className="button button--primary" href={doc.watch} target="_blank" rel="noopener noreferrer">
           Where to watch in the UK

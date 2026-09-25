@@ -1,13 +1,16 @@
-import { TOPICS } from './topics.js';
+import { MAKERS, SHORTCUTS, TOPICS } from './topics.js';
 
 // The query string holds everything needed to share a view:
-// ?collection=modern&topic=history&sort=newest&q=coal&doc=Q123
+// ?collection=modern&topic=history&subject=monarchy&maker=bbc&sort=newest&q=coal&doc=Q123
 // Defaults are left out, so the home page stays at a clean address.
-export const DEFAULTS = { collection: 'archive', topic: 'all', sort: 'popular', q: '', doc: '' };
+export const DEFAULTS = { collection: 'archive', topic: 'all', subject: '', maker: '', sort: 'popular', q: '', doc: '' };
+const ORDER = ['collection', 'topic', 'subject', 'maker', 'sort', 'q', 'doc'];
 
 const COLLECTIONS = ['archive', 'modern'];
 const SORTS = ['popular', 'newest', 'oldest', 'title'];
 const TOPIC_IDS = TOPICS.map(t => t.id);
+const SUBJECT_IDS = SHORTCUTS.map(s => s.id);
+const MAKER_IDS = MAKERS.map(m => m.id);
 const MAX_QUERY = 200;
 
 // Archive.org identifiers use letters, digits, dots, hyphens and underscores. Wikidata items are Q plus digits.
@@ -27,6 +30,9 @@ export function parseUrl(search) {
   return {
     collection,
     topic: pick('topic', TOPIC_IDS),
+    subject: pick('subject', SUBJECT_IDS),
+    // Broadcasters are known for modern documentaries only
+    maker: collection === 'modern' ? pick('maker', MAKER_IDS) : '',
     sort: pick('sort', SORTS),
     q: (params.get('q') || '').trim().slice(0, MAX_QUERY),
     doc: isValidDocId(collection, doc) ? doc : ''
@@ -35,7 +41,8 @@ export function parseUrl(search) {
 
 export function buildSearch(state) {
   const params = new URLSearchParams();
-  for (const key of ['collection', 'topic', 'sort', 'q', 'doc']) {
+  for (const key of ORDER) {
+    if (key === 'maker' && state.collection !== 'modern') continue;
     if (state[key] && state[key] !== DEFAULTS[key]) params.set(key, state[key]);
   }
   const text = params.toString();

@@ -41,8 +41,8 @@ Three topics: History and war, Society and culture, Wales and Britain.
 ## Agreed for after Phase 1 (decided 25 September 2026)
 
 - Done: Modern documentaries include documentary TV series and miniseries, from any year (3,965 titles, 334 series).
-- Add a "Made by" filter for BBC, PBS and History, using Wikidata original broadcaster (P449) and production company (P272). Sub-channels such as BBC Two and BBC Four count as BBC.
-- Add subject shortcuts for American Civil War, English Civil War, Spanish Civil War and British monarchy, using main subject (P921) with keywords as a fallback. British monarchy must cover the Normans, Plantagenets, Tudors and Stuarts.
+- Done: "Made by" filter for BBC, PBS and History, from original broadcaster (P449) and production company (P272), sub-channels included. Modern documentaries only.
+- Done: subject shortcuts for American Civil War, English Civil War, Spanish Civil War and British monarchy (Normans, Plantagenets, Tudors, Stuarts), from Wikidata subjects with keyword phrases as a backup, and from phrase searches on Archive.org. Coverage is thin in both sources.
 - Broadcaster uploads (BBC, PBS, History channel TV) stay out of Archive films. They are usually copyrighted and get taken down.
 - Look up every Wikidata item ID live before using it. Never hard-code an ID from memory.
 - Phase 1 finishes first.

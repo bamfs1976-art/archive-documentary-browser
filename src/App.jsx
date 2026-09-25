@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { TOPICS } from './services/topics.js';
+import { MAKERS, SHORTCUTS, TOPICS } from './services/topics.js';
 import { filterModern } from './services/wikidata.js';
 import { useArchiveDocs } from './hooks/useArchiveDocs.js';
 import { useModernDocs } from './hooks/useModernDocs.js';
@@ -22,22 +22,22 @@ const SORT_LABELS = {
 
 export default function App() {
   const [url, navigate, urlRef] = useUrlState();
-  const { collection: source, topic, sort, q: query } = url;
+  const { collection: source, topic, subject, maker, sort, q: query } = url;
   const [draft, setDraft] = useState(query);
   const [modernShown, setModernShown] = useState(MODERN_PAGE);
   const [notice, setNotice] = useState('');
 
-  const archive = useArchiveDocs({ topic, sort, query, enabled: source === 'archive' });
+  const archive = useArchiveDocs({ topic, sort, query, subject, enabled: source === 'archive' });
   const modern = useModernDocs(source === 'modern');
 
   const modernMatches = useMemo(
-    () => filterModern(modern.docs, { topic, query, sort }),
-    [modern.docs, topic, query, sort]
+    () => filterModern(modern.docs, { topic, query, sort, subject, maker }),
+    [modern.docs, topic, query, sort, subject, maker]
   );
 
   // Back and Forward can change the search, so keep the box in step with the address
   useEffect(() => setDraft(query), [query]);
-  useEffect(() => setModernShown(MODERN_PAGE), [source, topic, sort, query]);
+  useEffect(() => setModernShown(MODERN_PAGE), [source, topic, subject, maker, sort, query]);
 
   const selection = useSelectedDoc({
     collection: source,
@@ -113,10 +113,26 @@ export default function App() {
         </nav>
 
         <section className="controls" aria-label="Filter documentaries">
-          <div className="topics" role="group" aria-label="Topic">
+          <div className="topics" role="group" aria-labelledby="topic-label">
+            <span id="topic-label" className="group-label">Topic</span>
             {TOPICS.map(t => (
               <button key={t.id} type="button" className="pill" aria-pressed={topic === t.id} onClick={() => choose('topic')(t.id)}>
                 {t.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="topics" role="group" aria-labelledby="subject-label">
+            <span id="subject-label" className="group-label">Subject</span>
+            {SHORTCUTS.map(sc => (
+              <button
+                key={sc.id}
+                type="button"
+                className="pill pill--subject"
+                aria-pressed={subject === sc.id}
+                onClick={() => choose('subject')(subject === sc.id ? '' : sc.id)}
+              >
+                {sc.label}
               </button>
             ))}
           </div>
@@ -135,6 +151,16 @@ export default function App() {
               <button type="submit" className="button button--primary">Search</button>
               {query && <button type="button" className="button" onClick={clearSearch}>Clear</button>}
             </form>
+
+            {!isArchive && (
+              <label className="sort">
+                <span>Made by</span>
+                <select value={maker} onChange={e => choose('maker')(e.target.value)}>
+                  <option value="">Anyone</option>
+                  {MAKERS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+                </select>
+              </label>
+            )}
 
             <label className="sort">
               <span>Sort</span>
@@ -166,7 +192,11 @@ export default function App() {
 
           {!loading && !error && total === 0 && (
             <div className="message">
-              <p>No documentaries match. Pick another topic or clear your search.</p>
+              <p>
+                {subject
+                  ? 'Few films on this subject exist in this collection. Try the other collection, or pick another subject.'
+                  : 'No documentaries match. Pick another topic or clear your search.'}
+              </p>
             </div>
           )}
 

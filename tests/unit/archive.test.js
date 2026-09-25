@@ -34,6 +34,18 @@ describe('buildQuery', () => {
     expect(buildQuery({ topic: 'history' })).not.toContain('wochenschau');
   });
 
+  it('adds a subject shortcut on top of the topic', () => {
+    const q = buildQuery({ topic: 'history', subject: 'spanish-civil-war' });
+    expect(q).toContain('subject:(war OR history');
+    expect(q).toContain('"spanish civil war"');
+    expect(q).toContain('AND NOT title:(wochenschau OR monatsschau)');
+    expect(buildQuery({ subject: 'vikings' })).toBe(buildQuery({}));
+  });
+
+  it('keeps the American Civil War shortcut away from other civil wars', () => {
+    expect(buildQuery({ subject: 'american-civil-war' })).toContain('AND NOT title:(spain OR spanish OR china)');
+  });
+
   it('joins search words with AND across title, subject and description', () => {
     expect(buildQuery({ query: 'coal mining' })).toContain(
       ' AND (title:(coal AND mining) OR subject:(coal AND mining) OR description:(coal AND mining))'

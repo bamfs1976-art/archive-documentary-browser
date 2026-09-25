@@ -30,3 +30,10 @@ export function shorten(text, max = 320) {
   const cut = text.slice(0, max);
   return cut.slice(0, cut.lastIndexOf(' ')) + '…';
 }
+
+// "A", "A and B", "A, B and C": no comma before "and", in line with the house style
+export function listText(items) {
+  const list = items.filter(Boolean);
+  if (list.length < 2) return list[0] ?? '';
+  return `${list.slice(0, -1).join(', ')} and ${list[list.length - 1]}`;
+}

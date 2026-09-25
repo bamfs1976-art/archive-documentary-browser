@@ -29,6 +29,7 @@ export function ModernCard({ doc, onOpen }) {
     <li>
       <button type="button" className={`title-card title-card--${band}`} onClick={() => onOpen(doc)}>
         <span className="title-card__year">{doc.year ?? 'Undated'}</span>
+        {doc.format === 'series' && <span className="card-meta">Series</span>}
         <span className="title-card__title">{doc.title}</span>
         {doc.director && <span className="card-meta">Directed by {doc.director}</span>}
         {doc.topics.length > 0 && (

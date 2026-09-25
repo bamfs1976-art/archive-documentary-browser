@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { asList, first, safeUrl, shorten, toPlainText } from '../../src/services/text.js';
+import { asList, first, listText, safeUrl, shorten, toPlainText } from '../../src/services/text.js';
 
 describe('first and asList', () => {
   it('handle strings, arrays and missing values', () => {
@@ -55,4 +55,13 @@ describe('safeUrl', () => {
     'rejects %j',
     value => expect(safeUrl(value)).toBe('')
   );
+});
+
+describe('listText', () => {
+  it('joins without a comma before and', () => {
+    expect(listText([])).toBe('');
+    expect(listText(['BBC'])).toBe('BBC');
+    expect(listText(['BBC', 'PBS'])).toBe('BBC and PBS');
+    expect(listText(['BBC', 'PBS', 'History channel'])).toBe('BBC, PBS and History channel');
+  });
 });

@@ -125,6 +125,9 @@ function toDoc(row, index) {
     watch: `https://www.justwatch.com/uk/search?q=${encodeURIComponent(title)}`
   };
   doc.topics = classify(doc);
+  // The live fallback has no build-time tags, so shortcuts come from keywords and makers stay unknown
+  doc.shortcuts = shortcutsFor(doc);
+  doc.makers = [];
   return doc;
 }
 

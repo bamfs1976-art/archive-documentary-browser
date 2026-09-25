@@ -7,13 +7,18 @@ describe('parseUrl', () => {
   });
 
   it('reads every setting', () => {
-    expect(parseUrl('?collection=modern&topic=history&sort=newest&q=coal+mining&doc=Q42')).toEqual({
-      collection: 'modern', topic: 'history', sort: 'newest', q: 'coal mining', doc: 'Q42'
+    expect(parseUrl('?collection=modern&topic=history&subject=monarchy&maker=bbc&sort=newest&q=coal+mining&doc=Q42')).toEqual({
+      collection: 'modern', topic: 'history', subject: 'monarchy', maker: 'bbc', sort: 'newest', q: 'coal mining', doc: 'Q42'
     });
   });
 
   it('falls back to defaults for unknown values', () => {
-    expect(parseUrl('?collection=films&topic=cats&sort=random')).toEqual(DEFAULTS);
+    expect(parseUrl('?collection=films&topic=cats&sort=random&subject=vikings&maker=itv')).toEqual(DEFAULTS);
+  });
+
+  it('keeps a broadcaster only for modern documentaries', () => {
+    expect(parseUrl('?maker=bbc').maker).toBe('');
+    expect(parseUrl('?collection=modern&maker=pbs').maker).toBe('pbs');
   });
 
   it('checks the documentary id against the collection', () => {
@@ -37,12 +42,13 @@ describe('buildSearch', () => {
   });
 
   it('writes settings in a fixed order and encodes the search', () => {
-    expect(buildSearch({ collection: 'modern', topic: 'society', sort: 'title', q: 'fish & chips', doc: 'Q1' }))
-      .toBe('?collection=modern&topic=society&sort=title&q=fish+%26+chips&doc=Q1');
+    expect(buildSearch({ collection: 'modern', topic: 'society', subject: 'monarchy', maker: 'bbc', sort: 'title', q: 'fish & chips', doc: 'Q1' }))
+      .toBe('?collection=modern&topic=society&subject=monarchy&maker=bbc&sort=title&q=fish+%26+chips&doc=Q1');
+    expect(buildSearch({ ...DEFAULTS, maker: 'bbc' })).toBe('');
   });
 
   it('round-trips through parseUrl', () => {
-    const state = { collection: 'modern', topic: 'history', sort: 'oldest', q: 'Aberfan', doc: 'Q7' };
+    const state = { collection: 'modern', topic: 'history', subject: 'spanish-civil-war', maker: 'pbs', sort: 'oldest', q: 'Aberfan', doc: 'Q7' };
     expect(parseUrl(buildSearch(state))).toEqual(state);
   });
 });

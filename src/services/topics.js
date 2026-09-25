@@ -31,6 +31,15 @@ export const SHORTCUTS = [
 
 export const shortcutLabel = id => SHORTCUTS.find(s => s.id === id)?.label ?? '';
 
+// Broadcasters, from Wikidata's original broadcaster and production company, sub-channels included
+export const MAKERS = [
+  { id: 'bbc', label: 'BBC' },
+  { id: 'pbs', label: 'PBS' },
+  { id: 'history', label: 'History channel' }
+];
+
+export const makerLabel = id => MAKERS.find(m => m.id === id)?.label ?? '';
+
 const textOf = ({ title, description, subjects }) => [title, description, ...(subjects ?? [])].join(' ');
 
 export function shortcutsFor(doc) {

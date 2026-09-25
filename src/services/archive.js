@@ -36,6 +36,18 @@ const TOPIC_QUERIES = {
     ' AND NOT title:(wochenschau OR "ufa-tonwoche")'
 };
 
+// Subject shortcuts. Archive.org only offers text search, so these are specific phrases, checked live on
+// 25 September 2026. A bare "civil war" also found Spain and China, and newsreel descriptions mention the King in
+// passing, so the monarchy clause searches descriptions for coronations, royal tours and weddings only.
+const inFields = terms => `(title:(${terms}) OR subject:(${terms}) OR description:(${terms}))`;
+const SUBJECT_QUERIES = {
+  'american-civil-war': ` AND (${inFields('"american civil war" OR gettysburg OR appomattox OR "blue and gray"')} OR title:("civil war" OR confederate OR confederacy)) AND NOT title:(spain OR spanish OR china)`,
+  'english-civil-war': ` AND ${inFields('"english civil war" OR cromwell OR roundheads')}`,
+  'spanish-civil-war': ` AND (${inFields('"spanish civil war" OR "guerra civil" OR guernica OR "international brigade"')} OR title:(spain OR spanish)) AND NOT title:(wochenschau OR monatsschau)`,
+  monarchy: ' AND (title:(coronation OR "royal family" OR "king george" OR "king and queen" OR "princess elizabeth" OR "royal tour" OR "royal wedding")' +
+    ' OR subject:(coronation OR "royal family" OR monarchy) OR description:(coronation OR "royal tour" OR "royal wedding"))'
+};
+
 const SORTS = {
   popular: 'downloads desc',
   oldest: 'year asc',
@@ -57,8 +69,8 @@ function searchClause(text) {
   return ` AND (title:(${all}) OR subject:(${all}) OR description:(${all}))`;
 }
 
-export function buildQuery({ topic = 'all', query = '' }) {
-  return SOURCE + EXCLUDE + BLOCK + (TOPIC_QUERIES[topic] ?? '') + searchClause(query);
+export function buildQuery({ topic = 'all', query = '', subject = '' }) {
+  return SOURCE + EXCLUDE + BLOCK + (TOPIC_QUERIES[topic] ?? '') + (SUBJECT_QUERIES[subject] ?? '') + searchClause(query);
 }
 
 // Runtime appears as "01:12:30", "72:10" or "72 minutes". Returns whole minutes or null.
@@ -103,8 +115,8 @@ export async function fetchArchiveDoc(id, { signal } = {}) {
   return raw ? toDoc(raw) : null;
 }
 
-export async function fetchArchiveDocs({ topic, sort, query, page, signal }) {
-  const params = new URLSearchParams({ q: buildQuery({ topic, query }) });
+export async function fetchArchiveDocs({ topic, sort, query, subject, page, signal }) {
+  const params = new URLSearchParams({ q: buildQuery({ topic, query, subject }) });
   FIELDS.forEach(field => params.append('fl[]', field));
   params.append('sort[]', SORTS[sort] ?? SORTS.popular);
   params.set('rows', String(PAGE_SIZE));
