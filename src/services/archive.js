@@ -4,16 +4,21 @@ import { first, asList, toPlainText } from './text.js';
 const API = 'https://archive.org/advancedsearch.php';
 export const PAGE_SIZE = 36;
 
-// Curated collections only, to keep to films Archive.org holds as public domain or openly licensed.
-// Prelinger and News & Public Affairs are factual by nature. The film collections count only when
-// an item carries a documentary tag.
+// Named collections only, to keep to films Archive.org holds as public domain or openly licensed.
+// Prelinger and Universal Newsreels count in full. The other film collections count only when an item
+// carries a documentary or newsreel tag. News & Public Affairs is not trusted as a whole: in September 2026
+// it held 3.4 million items, mostly community access TV, raw news footage and extremist propaganda.
+const DOC_TAGS = 'subject:(documentary OR documentaries OR newsreel OR newsreels)';
 const SOURCE =
-  'mediatype:movies AND (collection:(prelinger OR newsandpublicaffairs) OR ' +
-  '(collection:(feature_films OR moviesandfilms OR silent_films) AND subject:(documentary OR documentaries)))';
+  'mediatype:movies AND (collection:(prelinger OR universal_newsreels) OR ' +
+  `(collection:(usgovfilms OR feature_films OR moviesandfilms OR silent_films OR short_films) AND ${DOC_TAGS}))`;
 
-// Sub-collections holding trailers, stock footage and home movies rather than films
+// Collections and titles holding trailers, stock footage, home movies, adverts, lectures, raw TV
+// or militant videos rather than documentaries. Belt and braces: none of these should match SOURCE.
 const EXCLUDE =
-  ' AND NOT collection:(movie_trailers_unsorted OR stock_footage OR 35mmstockfootage OR home_movies OR prelinger_mashups)';
+  ' AND NOT collection:(movie_trailers_unsorted OR stock_footage OR 35mmstockfootage OR home_movies OR prelinger_mashups' +
+  ' OR iraq_war OR iraq_middleeast OR iraq_911 OR community_media OR royal_society_arts OR sept_11_tv_archive OR stream_only)' +
+  ' AND NOT title:("home movies" OR "television commercials" OR trailer OR "stock footage")';
 
 const TOPIC_QUERIES = {
   all: '',
