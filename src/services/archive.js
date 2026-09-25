@@ -19,7 +19,7 @@ const SOURCE =
 const EXCLUDE =
   ' AND NOT collection:(movie_trailers_unsorted OR stock_footage OR 35mmstockfootage OR home_movies OR prelinger_mashups' +
   ' OR iraq_war OR iraq_middleeast OR iraq_911 OR community_media OR royal_society_arts OR sept_11_tv_archive OR stream_only)' +
-  ' AND NOT title:("home movies" OR "television commercials" OR trailer OR "stock footage")';
+  ' AND NOT title:("home movie" OR "home movies" OR "television commercials" OR trailer OR "stock footage")';
 
 // Single items to hide, with the reason, in src/data/blocklist.json
 const BLOCKED = blocklist

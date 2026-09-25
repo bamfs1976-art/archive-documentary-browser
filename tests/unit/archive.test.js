@@ -15,7 +15,7 @@ describe('buildQuery', () => {
   it('shuts out militant videos, community TV and lectures', () => {
     const q = buildQuery({});
     for (const c of ['iraq_war', 'iraq_middleeast', 'community_media', 'royal_society_arts']) expect(q).toContain(c);
-    expect(q).toContain('AND NOT title:("home movies" OR "television commercials"');
+    expect(q).toContain('AND NOT title:("home movie" OR "home movies" OR "television commercials"');
   });
 
   it('adds no topic clause for all topics or an unknown topic', () => {
