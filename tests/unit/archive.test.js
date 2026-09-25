@@ -2,10 +2,20 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildQuery, fetchArchiveDocs, parseRuntime, PAGE_SIZE } from '../../src/services/archive.js';
 
 describe('buildQuery', () => {
-  it('limits results to movies from the curated collections', () => {
+  it('limits results to movies from the named collections', () => {
     const q = buildQuery({});
-    expect(q).toMatch(/^mediatype:movies AND \(collection:\(prelinger OR newsandpublicaffairs\)/);
+    expect(q).toMatch(/^mediatype:movies AND \(collection:\(prelinger OR universal_newsreels\)/);
     expect(q).toContain('AND NOT collection:(movie_trailers_unsorted OR stock_footage');
+  });
+
+  it('never trusts News & Public Affairs as a whole', () => {
+    expect(buildQuery({})).not.toContain('newsandpublicaffairs');
+  });
+
+  it('shuts out militant videos, community TV and lectures', () => {
+    const q = buildQuery({});
+    for (const c of ['iraq_war', 'iraq_middleeast', 'community_media', 'royal_society_arts']) expect(q).toContain(c);
+    expect(q).toContain('AND NOT title:("home movies" OR "television commercials"');
   });
 
   it('adds no topic clause for all topics or an unknown topic', () => {
