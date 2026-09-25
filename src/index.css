@@ -56,7 +56,9 @@ a:hover { color: var(--red); }
 
 /* Topics and toolbar */
 .controls { display: grid; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
-.topics { display: flex; flex-wrap: wrap; gap: .5rem; }
+.topics { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.group-label { flex: 0 0 5.5rem; font: 600 .95rem/1 var(--display); color: var(--muted); }
+@media (max-width: 520px) { .group-label { flex-basis: 100%; } }
 .pill {
   font: 600 .95rem/1 var(--display); padding: .6rem .95rem; min-height: 44px;
   border: 1.5px solid var(--teal); border-radius: 999px; background: transparent; color: var(--teal); cursor: pointer;
@@ -161,6 +163,7 @@ a:hover { color: var(--red); }
 .facts { color: var(--muted); margin: 0 0 .6rem; }
 .summary { max-width: 68ch; }
 .links { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.25rem 0 .5rem; }
+.copy-status { align-self: center; color: var(--muted); font-size: .95rem; }
 .note { font-size: .92rem; color: var(--muted); margin: 0; }
 
 .player { margin-top: 2.25rem; aspect-ratio: 16 / 9; background: var(--film); border-radius: 3px; overflow: hidden; }

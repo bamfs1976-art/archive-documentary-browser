@@ -110,6 +110,17 @@ describe('filterModern', () => {
     expect(ids(filterModern(docs, { topic: 'all', query: '', sort: 'unknown' }))).toEqual(['a', 'b', 'c']);
   });
 
+  it('filters by subject shortcut and broadcaster', () => {
+    const tagged = [
+      { ...docs[0], shortcuts: ['spanish-civil-war'], makers: ['bbc'] },
+      { ...docs[1], shortcuts: ['monarchy'], makers: [] },
+      { ...docs[2] }
+    ];
+    expect(ids(filterModern(tagged, { topic: 'all', query: '', sort: 'popular', subject: 'monarchy' }))).toEqual(['b']);
+    expect(ids(filterModern(tagged, { topic: 'all', query: '', sort: 'popular', maker: 'bbc' }))).toEqual(['a']);
+    expect(ids(filterModern(tagged, { topic: 'all', query: '', sort: 'popular', subject: 'monarchy', maker: 'bbc' }))).toEqual([]);
+  });
+
   it('does not change the input order', () => {
     filterModern(docs, { topic: 'all', query: '', sort: 'title' });
     expect(ids(docs)).toEqual(['a', 'b', 'c']);

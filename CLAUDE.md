@@ -7,21 +7,23 @@ Standards and decisions for Documentary Browser. Read this before changing anyth
 A React 18 and Vite 5 single-page app with two collections behind one switch.
 
 - Archive films: documentaries, newsreels and information films from the Internet Archive advanced search API. They play in the embedded Archive.org player.
-- Modern documentaries: documentary films (Wikidata Q93204) released since 1980 with at least four Wikipedia sitelinks. Each links to JustWatch UK, Wikipedia and Wikidata.
+- Modern documentaries: films, TV series and miniseries with a documentary genre on Wikidata, any year, with at least four Wikipedia sitelinks. Each links to JustWatch UK, Wikipedia and Wikidata.
 
 Three topics: History and war, Society and culture, Wales and Britain.
 
 ## Layout
 
 - `src/services/archive.js` builds the Archive.org query, parses results and runtimes.
-- `src/services/wikidataQuery.js` holds the SPARQL query and row parser. It must run in Node and the browser.
+- `src/services/wikidataQuery.js` holds the SPARQL queries (a title list, detail batches, and one combined query for the browser's last-resort fallback), the row parser, the fiction rule and `hydrate`. It must run in Node and the browser.
+- `src/services/wikidataTags.js` tags titles from Wikidata's structure: topic, shortcut and broadcaster roots, and the level-by-level climb.
 - `src/services/wikidata.js` loads the snapshot, falls back to a live fetch, filters and sorts modern titles.
-- `scripts/fetch-modern.mjs` saves the snapshot to `src/data/modern.json` before each build. Topics are left out of the file and worked out on load.
+- `scripts/fetch-modern.mjs` builds the snapshot in stages: title list, detail batches of 500, then the tagging climb. It writes `src/data/modern.json` without raw IDs or rebuildable links. Topics are worked out on load from the stored tags, with keywords as the backup.
 - `src/services/topics.js` defines topics and classifies modern titles.
 - `src/services/text.js` turns HTML into plain text and shortens text.
 - `src/services/storage.js` wraps localStorage with an in-memory fallback.
 - `src/hooks/` fetches and pages data. `src/components/` renders cards and the details dialog.
-- `src/App.jsx` holds UI state. `src/index.css` holds all styles and colour tokens.
+- `src/services/url.js` parses and builds the query string. `src/hooks/useUrlState.js` syncs it with history. `src/hooks/useSelectedDoc.js` resolves `doc` to a documentary.
+- `src/App.jsx` holds UI state, with the address as the source of truth for collection, topic, sort, search and the open documentary. `src/index.css` holds all styles and colour tokens.
 
 ## Fixed decisions (ask Anthony before changing)
 
@@ -38,10 +40,9 @@ Three topics: History and war, Society and culture, Wales and Britain.
 
 ## Agreed for after Phase 1 (decided 25 September 2026)
 
-- Modern documentaries widen to include documentary TV series and miniseries, not only films.
-- The 1980 cut-off goes. Classics such as The World at War can appear.
-- Add a "Made by" filter for BBC, PBS and History, using Wikidata original broadcaster (P449) and production company (P272). Sub-channels such as BBC Two and BBC Four count as BBC.
-- Add subject shortcuts for American Civil War, English Civil War, Spanish Civil War and British monarchy, using main subject (P921) with keywords as a fallback. British monarchy must cover the Normans, Plantagenets, Tudors and Stuarts.
+- Done: Modern documentaries include documentary TV series and miniseries, from any year (3,965 titles, 334 series).
+- Done: "Made by" filter for BBC, PBS and History, from original broadcaster (P449) and production company (P272), sub-channels included. Modern documentaries only.
+- Done: subject shortcuts for American Civil War, English Civil War, Spanish Civil War and British monarchy (Normans, Plantagenets, Tudors, Stuarts), from Wikidata subjects with keyword phrases as a backup, and from phrase searches on Archive.org. Coverage is thin in both sources.
 - Broadcaster uploads (BBC, PBS, History channel TV) stay out of Archive films. They are usually copyrighted and get taken down.
 - Look up every Wikidata item ID live before using it. Never hard-code an ID from memory.
 - Phase 1 finishes first.
@@ -53,6 +54,15 @@ Three topics: History and war, Society and culture, Wales and Britain.
 - Hide single items through `src/data/blocklist.json`: an array of `{ "id": "identifier", "reason": "why" }`.
 - In cloud sessions Node's fetch ignores the proxy. Prefix scripts that call the APIs with `NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt`.
 - Sandbox note: headless Chromium in cloud sessions rejects the proxy's HTTPS, so `npm run test:live` only works on a normal machine. Check live behaviour on the Netlify preview.
+
+## Wikidata lessons (25 September 2026)
+
+- Wikidata stops any query at 60 seconds, and load varies: a query that ran in 15 seconds timed out half an hour later. Keep every build query small: list IDs first, then fetch in batches.
+- Never use a transitive path such as `(wdt:P31|wdt:P279)*` against fixed roots for many items. It times out. Climb one level of direct parents per query instead (`wikidataTags.js`).
+- Items typed only as documentary film (P31 Q93204) make the selection slow and add 3 titles. They are left out.
+- Broad roots (culture, society, art) and deep climbs (6 levels) mislabel titles. Use 4 levels and specific roots.
+- Wikidata has almost no documentaries tagged with the English Civil War, Tudors, Plantagenets, Stuarts or Normans. Shortcuts rely on keyword phrases for those.
+- Wikidata limits query time per client. Expect 429 replies; the build waits as asked and retries.
 
 ## Accessibility
 
@@ -75,6 +85,8 @@ Checked pairings:
 | Muted on white | 7.1:1 |
 
 ## Security
+
+- A shared link must never widen what the app shows. `fetchArchiveDoc` looks films up inside the trusted query, and `url.js` validates every parameter.
 
 - Never use `dangerouslySetInnerHTML` with API data. Convert HTML to text with `toPlainText`.
 - Only render `https:` URLs from API data in `href` or `src`.

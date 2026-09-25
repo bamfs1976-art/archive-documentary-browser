@@ -4,9 +4,21 @@ A React and Vite app for finding documentaries. Two collections sit side by side
 
 Archive films: free documentaries, newsreels and information films from the Internet Archive. Watch them in the browser.
 
-Modern documentaries: notable documentaries released since 1980, drawn from Wikidata. Each one links to JustWatch UK to show where to stream it.
+Modern documentaries: notable documentary films and series from any year, drawn from Wikidata. Each one links to JustWatch UK to show where to stream it.
 
 No API keys. No accounts. No server.
+
+## Subjects and broadcasters
+
+Four subject shortcuts sit under the topics: American Civil War, English Civil War, Spanish Civil War and British monarchy (Normans, Plantagenets, Tudors, Stuarts and the modern royal family). Modern documentaries match through Wikidata's subjects, with specific keyword phrases as a backup. Archive films match through careful Archive.org text searches.
+
+Modern documentaries also filter by who made them: BBC, PBS or the History channel, including their sub-channels such as BBC Four.
+
+Coverage is thin for these subjects. Wikidata holds very few documentaries tagged with them, and Archive.org's public domain collections hold only a handful of films.
+
+## Sharing
+
+Every view has its own address. The collection, topic, subject, broadcaster, sort order, search and open documentary all live in the query string, for example `?collection=modern&topic=history&subject=monarchy&maker=bbc&q=coal&doc=Q123`. Back and Forward step through what you did. Copy link in the details panel copies the address of the open documentary. A shared archive link only opens films the app would list anyway.
 
 ## Topics
 

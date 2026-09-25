@@ -1,6 +1,5 @@
 import { readCache, writeCache } from './storage.js';
-import { classify } from './topics.js';
-import { ENDPOINT, QUERY, parseBindings } from './wikidataQuery.js';
+import { ENDPOINT, QUERY, hydrate, parseBindings } from './wikidataQuery.js';
 
 const CACHE_KEY = 'docs:wikidata:v1';
 const CACHE_AGE_MS = 7 * 24 * 60 * 60 * 1000;
@@ -15,8 +14,7 @@ async function loadSnapshot() {
   try {
     const snapshot = await load();
     const docs = Array.isArray(snapshot?.docs) ? snapshot.docs : [];
-    // Classify on load, so topic rule changes apply even when the build kept an older snapshot
-    return docs.length ? docs.map(d => ({ ...d, topics: classify(d) })) : null;
+    return docs.length ? docs.map(hydrate) : null;
   } catch {
     return null;
   }
@@ -37,10 +35,12 @@ export async function fetchModernDocs({ signal, fresh = false } = {}) {
   return docs;
 }
 
-export function filterModern(docs, { topic, query, sort }) {
+export function filterModern(docs, { topic, query, sort, subject = '', maker = '' }) {
   const words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
   const matches = docs.filter(d => {
     if (topic !== 'all' && !d.topics.includes(topic)) return false;
+    if (subject && !(d.shortcuts ?? []).includes(subject)) return false;
+    if (maker && !(d.makers ?? []).includes(maker)) return false;
     if (!words.length) return true;
     const haystack = [d.title, d.director, d.description, ...d.subjects].join(' ').toLowerCase();
     return words.every(w => haystack.includes(w));

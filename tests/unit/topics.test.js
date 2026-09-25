@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classify, topicLabel, TOPICS } from '../../src/services/topics.js';
+import { classify, keywordTopics, shortcutsFor, topicLabel, TOPICS } from '../../src/services/topics.js';
 
 const doc = fields => ({ title: '', description: '', subjects: [], countries: [], ...fields });
 
@@ -44,5 +44,36 @@ describe('classify', () => {
 
   it('returns nothing for an unrelated title', () => {
     expect(classify(doc({ title: 'March of the Penguins', description: 'nature documentary' }))).toEqual([]);
+  });
+});
+
+describe('classify with Wikidata tags', () => {
+  it('prefers topics found from subjects and genres over keywords', () => {
+    expect(classify(doc({ title: 'Revolution OS', tags: { topics: ['society'] } }))).toEqual(['society']);
+    expect(keywordTopics(doc({ title: 'Revolution OS' }))).toEqual(['history']);
+  });
+
+  it('falls back to keywords when Wikidata found no topic', () => {
+    expect(classify(doc({ title: 'Nazi Megastructures', description: 'war', countries: ['Q145'], tags: { makers: ['bbc'] } })))
+      .toEqual(['britain', 'history']);
+  });
+
+  it('adds Wales and Britain for a British country of origin either way', () => {
+    expect(classify(doc({ countries: ['Q25'], tags: { topics: ['society'] } }))).toEqual(['society', 'britain']);
+  });
+});
+
+describe('shortcutsFor', () => {
+  it('uses Wikidata tags and specific phrases', () => {
+    expect(shortcutsFor(doc({ tags: { shortcuts: ['spanish-civil-war'] } }))).toEqual(['spanish-civil-war']);
+    expect(shortcutsFor(doc({ title: 'The Six Wives of Henry VIII' }))).toEqual(['monarchy']);
+    expect(shortcutsFor(doc({ description: 'the Battle of Gettysburg' }))).toEqual(['american-civil-war']);
+    expect(shortcutsFor(doc({ title: 'Cromwell and the Levellers' }))).toEqual(['english-civil-war']);
+  });
+
+  it('ignores lookalikes', () => {
+    for (const title of ['Queen at Wembley', 'James Franco: A Life', 'Cleveland Cavaliers', 'Norman Rockwell', 'Elizabeth II and me']) {
+      expect(shortcutsFor(doc({ title }))).toEqual([]);
+    }
   });
 });

@@ -19,7 +19,7 @@ const SOURCE =
 const EXCLUDE =
   ' AND NOT collection:(movie_trailers_unsorted OR stock_footage OR 35mmstockfootage OR home_movies OR prelinger_mashups' +
   ' OR iraq_war OR iraq_middleeast OR iraq_911 OR community_media OR royal_society_arts OR sept_11_tv_archive OR stream_only)' +
-  ' AND NOT title:("home movies" OR "television commercials" OR trailer OR "stock footage")';
+  ' AND NOT title:("home movie" OR "home movies" OR "television commercials" OR trailer OR "stock footage")';
 
 // Single items to hide, with the reason, in src/data/blocklist.json
 const BLOCKED = blocklist
@@ -34,6 +34,18 @@ const TOPIC_QUERIES = {
   // German wartime newsreels mention Britain as the enemy. They stay in History and war but swamp this topic.
   britain: ' AND (subject:(wales OR welsh OR britain OR british OR england OR scotland OR scottish OR london) OR title:(wales OR welsh OR britain OR british OR london))' +
     ' AND NOT title:(wochenschau OR "ufa-tonwoche")'
+};
+
+// Subject shortcuts. Archive.org only offers text search, so these are specific phrases, checked live on
+// 25 September 2026. A bare "civil war" also found Spain and China, and newsreel descriptions mention the King in
+// passing, so the monarchy clause searches descriptions for coronations, royal tours and weddings only.
+const inFields = terms => `(title:(${terms}) OR subject:(${terms}) OR description:(${terms}))`;
+const SUBJECT_QUERIES = {
+  'american-civil-war': ` AND (${inFields('"american civil war" OR gettysburg OR appomattox OR "blue and gray"')} OR title:("civil war" OR confederate OR confederacy)) AND NOT title:(spain OR spanish OR china)`,
+  'english-civil-war': ` AND ${inFields('"english civil war" OR cromwell OR roundheads')}`,
+  'spanish-civil-war': ` AND (${inFields('"spanish civil war" OR "guerra civil" OR guernica OR "international brigade"')} OR title:(spain OR spanish)) AND NOT title:(wochenschau OR monatsschau)`,
+  monarchy: ' AND (title:(coronation OR "royal family" OR "king george" OR "king and queen" OR "princess elizabeth" OR "royal tour" OR "royal wedding")' +
+    ' OR subject:(coronation OR "royal family" OR monarchy) OR description:(coronation OR "royal tour" OR "royal wedding"))'
 };
 
 const SORTS = {
@@ -57,8 +69,8 @@ function searchClause(text) {
   return ` AND (title:(${all}) OR subject:(${all}) OR description:(${all}))`;
 }
 
-export function buildQuery({ topic = 'all', query = '' }) {
-  return SOURCE + EXCLUDE + BLOCK + (TOPIC_QUERIES[topic] ?? '') + searchClause(query);
+export function buildQuery({ topic = 'all', query = '', subject = '' }) {
+  return SOURCE + EXCLUDE + BLOCK + (TOPIC_QUERIES[topic] ?? '') + (SUBJECT_QUERIES[subject] ?? '') + searchClause(query);
 }
 
 // Runtime appears as "01:12:30", "72:10" or "72 minutes". Returns whole minutes or null.
@@ -88,8 +100,23 @@ function toDoc(raw) {
   };
 }
 
-export async function fetchArchiveDocs({ topic, sort, query, page, signal }) {
-  const params = new URLSearchParams({ q: buildQuery({ topic, query }) });
+// Looks up one film for a shared link. The trusted query still applies, so a link can only open
+// a film the app would list anyway, never an arbitrary Archive.org upload. Returns null when not found.
+export async function fetchArchiveDoc(id, { signal } = {}) {
+  if (!/^[A-Za-z0-9._-]{1,100}$/.test(String(id || ''))) return null;
+  const params = new URLSearchParams({ q: `(${buildQuery({})}) AND identifier:"${id}"` });
+  FIELDS.forEach(field => params.append('fl[]', field));
+  params.set('rows', '1');
+  params.set('output', 'json');
+  const response = await fetch(`${API}?${params}`, { signal });
+  if (!response.ok) throw new Error(`Archive.org replied with status ${response.status}`);
+  const json = await response.json();
+  const raw = (json?.response?.docs ?? []).find(d => d.identifier === id);
+  return raw ? toDoc(raw) : null;
+}
+
+export async function fetchArchiveDocs({ topic, sort, query, subject, page, signal }) {
+  const params = new URLSearchParams({ q: buildQuery({ topic, query, subject }) });
   FIELDS.forEach(field => params.append('fl[]', field));
   params.append('sort[]', SORTS[sort] ?? SORTS.popular);
   params.set('rows', String(PAGE_SIZE));

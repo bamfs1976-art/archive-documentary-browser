@@ -50,6 +50,12 @@ describe('QUERY', () => {
     expect(QUERY).toContain('(MAX(?dur) AS ?minutes)');
   });
 
+  it('takes films, series and miniseries with a documentary genre, from any year', () => {
+    expect(QUERY).toContain('VALUES ?docGenre { wd:Q93204 wd:Q7603925 wd:Q1760864 }');
+    expect(QUERY).toContain('(wd:Q11424 "film") (wd:Q5398426 "series") (wd:Q1259759 "series")');
+    expect(QUERY).not.toMatch(/YEAR\(\?date\) >=/);
+  });
+
   it('asks for genres and allows up to 5,000 titles', () => {
     expect(QUERY).toContain('AS ?genres');
     expect(QUERY).toMatch(/LIMIT 5000`?$/);

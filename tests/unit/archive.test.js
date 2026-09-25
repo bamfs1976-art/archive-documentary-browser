@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { buildQuery, fetchArchiveDocs, parseRuntime, PAGE_SIZE } from '../../src/services/archive.js';
+import { buildQuery, fetchArchiveDoc, fetchArchiveDocs, parseRuntime, PAGE_SIZE } from '../../src/services/archive.js';
 
 describe('buildQuery', () => {
   it('limits results to movies from the named collections', () => {
@@ -15,7 +15,7 @@ describe('buildQuery', () => {
   it('shuts out militant videos, community TV and lectures', () => {
     const q = buildQuery({});
     for (const c of ['iraq_war', 'iraq_middleeast', 'community_media', 'royal_society_arts']) expect(q).toContain(c);
-    expect(q).toContain('AND NOT title:("home movies" OR "television commercials"');
+    expect(q).toContain('AND NOT title:("home movie" OR "home movies" OR "television commercials"');
   });
 
   it('adds no topic clause for all topics or an unknown topic', () => {
@@ -32,6 +32,18 @@ describe('buildQuery', () => {
   it('keeps German wartime newsreels out of Wales and Britain only', () => {
     expect(buildQuery({ topic: 'britain' })).toContain('AND NOT title:(wochenschau OR "ufa-tonwoche")');
     expect(buildQuery({ topic: 'history' })).not.toContain('wochenschau');
+  });
+
+  it('adds a subject shortcut on top of the topic', () => {
+    const q = buildQuery({ topic: 'history', subject: 'spanish-civil-war' });
+    expect(q).toContain('subject:(war OR history');
+    expect(q).toContain('"spanish civil war"');
+    expect(q).toContain('AND NOT title:(wochenschau OR monatsschau)');
+    expect(buildQuery({ subject: 'vikings' })).toBe(buildQuery({}));
+  });
+
+  it('keeps the American Civil War shortcut away from other civil wars', () => {
+    expect(buildQuery({ subject: 'american-civil-war' })).toContain('AND NOT title:(spain OR spanish OR china)');
   });
 
   it('joins search words with AND across title, subject and description', () => {
@@ -149,5 +161,30 @@ describe('fetchArchiveDocs', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 503 }));
     await expect(fetchArchiveDocs({ topic: 'all', sort: 'popular', query: '', page: 1 }))
       .rejects.toThrow('Archive.org replied with status 503');
+  });
+});
+
+describe('fetchArchiveDoc', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('looks the film up inside the trusted query only', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ response: { docs: [{ identifier: 'Night_Mail', title: 'Night Mail' }] } }) });
+    vi.stubGlobal('fetch', fetchMock);
+    const doc = await fetchArchiveDoc('Night_Mail');
+    const q = new URL(fetchMock.mock.calls[0][0]).searchParams.get('q');
+    expect(q).toBe(`(${buildQuery({})}) AND identifier:"Night_Mail"`);
+    expect(doc).toMatchObject({ id: 'Night_Mail', title: 'Night Mail' });
+  });
+
+  it('returns null when the trusted query does not hold the film', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ response: { docs: [] } }) }));
+    expect(await fetchArchiveDoc('some_militant_video')).toBeNull();
+  });
+
+  it('refuses malformed ids without calling Archive.org', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    expect(await fetchArchiveDoc('x" OR mediatype:texts')).toBeNull();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
