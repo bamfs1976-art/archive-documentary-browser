@@ -31,7 +31,9 @@ const TOPIC_QUERIES = {
   all: '',
   history: ' AND subject:(war OR history OR military OR army OR navy OR battle OR newsreel OR wwii OR "world war")',
   society: ' AND subject:(society OR social OR culture OR education OR health OR housing OR labor OR labour OR community OR family OR religion OR music)',
-  britain: ' AND (subject:(wales OR welsh OR britain OR british OR england OR scotland OR scottish OR london) OR title:(wales OR welsh OR britain OR british OR london))'
+  // German wartime newsreels mention Britain as the enemy. They stay in History and war but swamp this topic.
+  britain: ' AND (subject:(wales OR welsh OR britain OR british OR england OR scotland OR scottish OR london) OR title:(wales OR welsh OR britain OR british OR london))' +
+    ' AND NOT title:(wochenschau OR "ufa-tonwoche")'
 };
 
 const SORTS = {

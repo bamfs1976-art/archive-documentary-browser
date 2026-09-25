@@ -29,6 +29,11 @@ describe('buildQuery', () => {
     expect(buildQuery({ topic: 'britain' })).toContain('title:(wales OR welsh');
   });
 
+  it('keeps German wartime newsreels out of Wales and Britain only', () => {
+    expect(buildQuery({ topic: 'britain' })).toContain('AND NOT title:(wochenschau OR "ufa-tonwoche")');
+    expect(buildQuery({ topic: 'history' })).not.toContain('wochenschau');
+  });
+
   it('joins search words with AND across title, subject and description', () => {
     expect(buildQuery({ query: 'coal mining' })).toContain(
       ' AND (title:(coal AND mining) OR subject:(coal AND mining) OR description:(coal AND mining))'
