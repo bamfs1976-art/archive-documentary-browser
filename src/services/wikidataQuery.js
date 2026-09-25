@@ -7,25 +7,32 @@ import modernBlocklist from '../data/modernBlocklist.js';
 // Wikidata public query service: no key needed, open CORS
 export const ENDPOINT = 'https://query.wikidata.org/sparql';
 
-// Documentary films (Q93204) released since 1980, with at least four Wikipedia language
-// articles as a notability floor. Best known first. P57 director, P2047 duration (converted to minutes
-// from seconds Q11574 or hours Q25235; minutes Q7727 pass through; the longest cut when several are listed),
-// P921 main subject, P495 country of origin.
+// Documentaries on Wikidata, any year, with at least four Wikipedia language articles as a notability floor.
+// A title qualifies as a film (Q11424), television series (Q5398426) or miniseries (Q1259759) with a documentary
+// genre: documentary film Q93204, documentary television program Q7603925 or nature documentary Q1760864.
+// IDs checked live on 25 September 2026. Items typed only as "documentary film" are left out on purpose: that
+// branch pushed the query past Wikidata's 60 second limit and added just 3 titles.
+// Best known first. P57 director. P2047 duration, converted to minutes from seconds Q11574 or hours Q25235,
+// taking the longest cut when several are listed. P921 main subject, P495 country of origin, P136 genre,
+// P449 original broadcaster and P272 production company. The IDs feed the tagging step in wikidataTags.js.
 export const QUERY = `
-SELECT ?film ?title ?desc ?links ?article
+SELECT ?film (SAMPLE(?form) AS ?format) ?title ?desc ?links ?article
   (MIN(?date) AS ?released)
   (SAMPLE(?dirName) AS ?director)
   (MAX(?dur) AS ?minutes)
   (GROUP_CONCAT(DISTINCT ?subjName; separator="|") AS ?subjects)
+  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?subj), "/entity/"); separator="|") AS ?subjectIds)
   (GROUP_CONCAT(DISTINCT STRAFTER(STR(?country), "/entity/"); separator="|") AS ?countries)
   (GROUP_CONCAT(DISTINCT STRAFTER(STR(?genre), "/entity/"); separator="|") AS ?genres)
+  (GROUP_CONCAT(DISTINCT STRAFTER(STR(?org), "/entity/"); separator="|") AS ?orgs)
 WHERE {
-  { ?film wdt:P31 wd:Q93204 . } UNION { ?film wdt:P31 wd:Q11424 ; wdt:P136 wd:Q93204 . }
-  ?film wdt:P577 ?date .
-  FILTER(YEAR(?date) >= 1980)
+  VALUES ?docGenre { wd:Q93204 wd:Q7603925 wd:Q1760864 }
+  VALUES (?type ?form) { (wd:Q11424 "film") (wd:Q5398426 "series") (wd:Q1259759 "series") }
+  ?film wdt:P136 ?docGenre ; wdt:P31 ?type .
   ?film wikibase:sitelinks ?links .
   FILTER(?links >= 4)
   ?film rdfs:label ?title . FILTER(LANG(?title) = "en")
+  OPTIONAL { ?film wdt:P577|wdt:P580 ?date . }
   OPTIONAL { ?film schema:description ?desc . FILTER(LANG(?desc) = "en") }
   OPTIONAL { ?film wdt:P57 ?dir . ?dir rdfs:label ?dirName . FILTER(LANG(?dirName) = "en") }
   OPTIONAL {
@@ -33,9 +40,10 @@ WHERE {
     FILTER(?durRank != wikibase:DeprecatedRank)
     BIND(IF(?durUnit = wd:Q11574, ?durAmount / 60, IF(?durUnit = wd:Q25235, ?durAmount * 60, ?durAmount)) AS ?dur)
   }
-  OPTIONAL { ?film wdt:P921 ?subj . ?subj rdfs:label ?subjName . FILTER(LANG(?subjName) = "en") }
+  OPTIONAL { ?film wdt:P921 ?subj . OPTIONAL { ?subj rdfs:label ?subjName . FILTER(LANG(?subjName) = "en") } }
   OPTIONAL { ?film wdt:P495 ?country . }
   OPTIONAL { ?film wdt:P136 ?genre . }
+  OPTIONAL { ?film wdt:P449|wdt:P272 ?org . }
   OPTIONAL { ?article schema:about ?film ; schema:isPartOf <https://en.wikipedia.org/> . }
 }
 GROUP BY ?film ?title ?desc ?links ?article
@@ -75,6 +83,7 @@ function toDoc(row, index) {
   const minutes = Math.round(Number(value(row, 'minutes')));
   const doc = {
     kind: 'modern',
+    format: value(row, 'format') === 'series' ? 'series' : 'film',
     id: qid,
     rank: index,
     title,
@@ -83,6 +92,8 @@ function toDoc(row, index) {
     description: value(row, 'desc'),
     minutes: minutes > 0 ? minutes : null,
     subjects: split(value(row, 'subjects')).slice(0, 6),
+    subjectIds: split(value(row, 'subjectIds')),
+    orgs: split(value(row, 'orgs')),
     countries: split(value(row, 'countries')),
     genres: split(value(row, 'genres')),
     wikipedia: safeUrl(value(row, 'article')),

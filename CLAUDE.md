@@ -7,7 +7,7 @@ Standards and decisions for Documentary Browser. Read this before changing anyth
 A React 18 and Vite 5 single-page app with two collections behind one switch.
 
 - Archive films: documentaries, newsreels and information films from the Internet Archive advanced search API. They play in the embedded Archive.org player.
-- Modern documentaries: documentary films (Wikidata Q93204) released since 1980 with at least four Wikipedia sitelinks. Each links to JustWatch UK, Wikipedia and Wikidata.
+- Modern documentaries: films, TV series and miniseries with a documentary genre on Wikidata, any year, with at least four Wikipedia sitelinks. Each links to JustWatch UK, Wikipedia and Wikidata.
 
 Three topics: History and war, Society and culture, Wales and Britain.
 
@@ -39,8 +39,7 @@ Three topics: History and war, Society and culture, Wales and Britain.
 
 ## Agreed for after Phase 1 (decided 25 September 2026)
 
-- Modern documentaries widen to include documentary TV series and miniseries, not only films.
-- The 1980 cut-off goes. Classics such as The World at War can appear.
+- Done: Modern documentaries include documentary TV series and miniseries, from any year (3,965 titles, 334 series).
 - Add a "Made by" filter for BBC, PBS and History, using Wikidata original broadcaster (P449) and production company (P272). Sub-channels such as BBC Two and BBC Four count as BBC.
 - Add subject shortcuts for American Civil War, English Civil War, Spanish Civil War and British monarchy, using main subject (P921) with keywords as a fallback. British monarchy must cover the Normans, Plantagenets, Tudors and Stuarts.
 - Broadcaster uploads (BBC, PBS, History channel TV) stay out of Archive films. They are usually copyrighted and get taken down.

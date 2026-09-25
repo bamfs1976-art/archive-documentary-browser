@@ -4,7 +4,7 @@ A React and Vite app for finding documentaries. Two collections sit side by side
 
 Archive films: free documentaries, newsreels and information films from the Internet Archive. Watch them in the browser.
 
-Modern documentaries: notable documentaries released since 1980, drawn from Wikidata. Each one links to JustWatch UK to show where to stream it.
+Modern documentaries: notable documentary films and series from any year, drawn from Wikidata. Each one links to JustWatch UK to show where to stream it.
 
 No API keys. No accounts. No server.
 

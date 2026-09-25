@@ -12,7 +12,7 @@ const MODERN_PAGE = 48;
 
 const SOURCES = [
   { id: 'archive', label: 'Archive films', hint: 'Watch free here. Mostly 1930s to 1970s.' },
-  { id: 'modern', label: 'Modern documentaries', hint: 'Since 1980. Find where to stream in the UK.' }
+  { id: 'modern', label: 'Modern documentaries', hint: 'Films and series. Find where to stream in the UK.' }
 ];
 
 const SORT_LABELS = {
